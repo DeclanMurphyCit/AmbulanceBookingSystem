@@ -1,7 +1,9 @@
 package com.abs.domain;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 import java.util.Date;
 
-
+@XStreamAlias("AmbulanceCompany")
 public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	
 	private int id;
