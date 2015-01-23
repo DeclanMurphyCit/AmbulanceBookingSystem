@@ -12,10 +12,9 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	private Date timeActive;
 	private Date timeInactive;
 	private boolean cardiac;
-	private int capacity;
 		
 	public AmbulanceCompany(int id, String name, double price, Date timeActive,
-			Date timeInactive, boolean cardiac, int capacity) {
+			Date timeInactive, boolean cardiac) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -23,18 +22,16 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 		this.timeActive = timeActive;
 		this.timeInactive = timeInactive;
 		this.cardiac = cardiac;
-		this.capacity = capacity;
 	}
 	
 	public AmbulanceCompany(String name, double price, Date timeActive,
-			Date timeInactive, boolean cardiac, int capacity) {
+			Date timeInactive, boolean cardiac) {
 		super();
 		this.name = name;
 		this.price = price;
 		this.timeActive = timeActive;
 		this.timeInactive = timeInactive;
 		this.cardiac = cardiac;
-		this.capacity = capacity;
 	}
 	
 	public AmbulanceCompany(){}
@@ -75,16 +72,7 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	public void setCardiac(boolean cardiac) {
 		this.cardiac = cardiac;
 	}
-	public int getCapacity() {
-		return capacity;
-	}
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
-	}
-	
-	
 
-	
 
 /*	public int compareTo(AmbulanceCompany ac) {
 		double comparePrice = ((AmbulanceCompany) ac).getPrice();

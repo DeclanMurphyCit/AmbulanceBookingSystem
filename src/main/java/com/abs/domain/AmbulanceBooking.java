@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by Declan on 20/01/2015.
  */
 
-@PlanningEntity()
+@PlanningEntity
 @XStreamAlias("AmbulanceBooking")
 public class AmbulanceBooking {
 
