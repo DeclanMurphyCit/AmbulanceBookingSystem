@@ -29,6 +29,7 @@ public class AmbulanceBooking {
     private Date dateCreated;
     private Date dateOfTransfer;
 
+
     public AmbulanceBooking(int bookingId, int patientId, int createdBy,
                             int destination, int origin, boolean cardiac,
                             boolean urgent, Date dateCreated, Date dateOfTransfer) {
