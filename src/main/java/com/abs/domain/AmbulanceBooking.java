@@ -18,6 +18,7 @@ public class AmbulanceBooking {
     private int bookingId;
     private int patientId;
     private AmbulanceCompany ambCompany;
+    private int ambCompanyId;
     private int ambCrewId;
     private int createdBy; //User
     private int destination;
@@ -30,11 +31,12 @@ public class AmbulanceBooking {
     private Date dateOfTransfer;
 
 
-    public AmbulanceBooking(int bookingId, int patientId, int createdBy,
+    public AmbulanceBooking(int bookingId, int patientId,int ambCompanyId, int createdBy,
                             int destination, int origin, boolean cardiac,
                             boolean urgent, Date dateCreated, Date dateOfTransfer) {
         this.bookingId = bookingId;
         this.patientId = patientId;
+        this.ambCompanyId = ambCompanyId;
         this.createdBy = createdBy;
         this.destination = destination;
         this.origin = origin;
@@ -43,6 +45,23 @@ public class AmbulanceBooking {
         this.dateCreated = dateCreated;
         this.dateOfTransfer = dateOfTransfer;
     }
+
+    public AmbulanceBooking(int bookingId, int patientId,int ambCompanyId, int createdBy,
+                            int destination, int origin, boolean cardiac,
+                            boolean urgent/*, Date dateCreated, Date dateOfTransfer*/) { //TODO Add date functionality
+        this.bookingId = bookingId;
+        this.patientId = patientId;
+        this.ambCompanyId = ambCompanyId;
+        this.createdBy = createdBy;
+        this.destination = destination;
+        this.origin = origin;
+        this.cardiac = cardiac;
+        this.urgent = urgent;
+        /*this.dateCreated = dateCreated;
+        this.dateOfTransfer = dateOfTransfer;*/
+    }
+
+    public AmbulanceBooking(){}
 
     @PlanningVariable(valueRangeProviderRefs = {"acRange"})
     public AmbulanceCompany getAmbCompany() {
@@ -53,7 +72,13 @@ public class AmbulanceBooking {
         this.ambCompany = ambCompany;
     }
 
-    public AmbulanceBooking(){}
+    public int getAmbCompanyId() {
+        return ambCompanyId;
+    }
+
+    public void setAmbCompanyId(int ambCompanyId) {
+        this.ambCompanyId = ambCompanyId;
+    }
 
     public int getBookingId() {
         return bookingId;

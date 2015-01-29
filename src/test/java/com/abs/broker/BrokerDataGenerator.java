@@ -33,7 +33,7 @@ public class BrokerDataGenerator {
         ab.setCost(1500.00);
 
         AmbulanceCompany ac = new AmbulanceCompany();
-        ac.setPrice(9999.00);
+        ac.setCost(9999.00);
         ab.setAmbCompany(ac);
 
         ambBookingList.add(ab);
@@ -53,7 +53,7 @@ public class BrokerDataGenerator {
             //ac.setCapacity(r.nextInt(3)+1);
             ac.setCardiac(r.nextBoolean());
             ac.setName("BOOKING-"+i);
-            ac.setPrice(750 + (2250) * r.nextDouble());
+            ac.setCost(750 + (2250) * r.nextDouble());
             ambCompanyList.add(ac);
         }
 

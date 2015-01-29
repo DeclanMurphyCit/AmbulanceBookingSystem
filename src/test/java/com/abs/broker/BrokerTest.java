@@ -16,8 +16,7 @@ public class BrokerTest {
     public static void main(String[] args) {
 
         // Build the Solver
-        SolverFactory solverFactory = SolverFactory.createFromXmlResource(
-                "com/solver/brokerSolverConfig.xml");
+        SolverFactory solverFactory = SolverFactory.createFromXmlResource("com/solver/brokerSolverConfig.xml");
         Solver solver = solverFactory.buildSolver();
 
         PlanningSol unsolvedPlanningSol = new BrokerDataGenerator().createPlanningSol(20);
@@ -32,7 +31,7 @@ public class BrokerTest {
 
 
         try{
-            System.out.println("ProblemFactSize:"+solvedSolution.getProblemFacts().size());
+
         } catch(IndexOutOfBoundsException e){}
 
         System.out.println("Solved: "

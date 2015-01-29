@@ -22,7 +22,6 @@ public class PlanningSol implements Solution <SimpleScore> {
 
     private List<AmbulanceCompany> acList;
     private List<AmbulanceBooking> abList;
-    //private HardSoftScore score;
     private SimpleScore score;
 
     @ValueRangeProvider(id = "acRange")

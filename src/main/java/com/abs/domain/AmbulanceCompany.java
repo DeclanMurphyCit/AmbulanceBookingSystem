@@ -8,27 +8,27 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	
 	private int id;
 	private String name;
-	private double price;
-	private Date timeActive;
-	private Date timeInactive;
+	private double cost;
+	private String timeActive;
+	private String timeInactive;
 	private boolean cardiac;
 		
-	public AmbulanceCompany(int id, String name, double price, Date timeActive,
-			Date timeInactive, boolean cardiac) {
+	public AmbulanceCompany(int id, String name, double cost, String timeActive,
+							String timeInactive, boolean cardiac) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.price = price;
+		this.cost = cost;
 		this.timeActive = timeActive;
 		this.timeInactive = timeInactive;
 		this.cardiac = cardiac;
 	}
 	
-	public AmbulanceCompany(String name, double price, Date timeActive,
-			Date timeInactive, boolean cardiac) {
+	public AmbulanceCompany(String name, double cost, String timeActive,
+							String timeInactive, boolean cardiac) {
 		super();
 		this.name = name;
-		this.price = price;
+		this.cost = cost;
 		this.timeActive = timeActive;
 		this.timeInactive = timeInactive;
 		this.cardiac = cardiac;
@@ -48,22 +48,22 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public double getPrice() {
-		return price;
+	public double getCost() {
+		return cost;
 	}
-	public void setPrice(double price) {
-		this.price = price;
+	public void setCost(double cost) {
+		this.cost = cost;
 	}
-	public Date getTimeActive() {
+	public String getTimeActive() {
 		return timeActive;
 	}
-	public void setTimeActive(Date timeActive) {
+	public void setTimeActive(String timeActive) {
 		this.timeActive = timeActive;
 	}
-	public Date getTimeInactive() {
+	public String getTimeInactive() {
 		return timeInactive;
 	}
-	public void setTimeInactive(Date timeInactive) {
+	public void setTimeInactive(String timeInactive) {
 		this.timeInactive = timeInactive;
 	}
 	public boolean isCardiac() {
@@ -72,13 +72,4 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	public void setCardiac(boolean cardiac) {
 		this.cardiac = cardiac;
 	}
-
-
-/*	public int compareTo(AmbulanceCompany ac) {
-		double comparePrice = ((AmbulanceCompany) ac).getPrice();
-		
-		if(this.price == comparePrice) return 0;
-		else if(this.price > comparePrice) return 1;
-		else return -1;		
-	}	*/
 }

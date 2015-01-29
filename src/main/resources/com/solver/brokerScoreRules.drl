@@ -14,12 +14,15 @@ global SimpleScoreHolder scoreHolder;
 // Hard constraints
 // ############################################################################
 
-rule "lowPriceRule"
+rule "lowCostRule"
     when
 
         //AmbulanceBooking(AmbulanceCompany)
 
-        AmbulanceCompany(cardiac==false)
+        //AmbulanceCompany(cardiac==false)
+        $ac : AmbulanceCompany(cardiac==false)
+
+
 
     then
         scoreHolder.addConstraintMatch((org.kie.api.runtime.rule.RuleContext)kcontext,-1);
