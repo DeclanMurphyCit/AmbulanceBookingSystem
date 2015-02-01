@@ -1,6 +1,7 @@
 package com.abs.repository;
 
 import com.abs.domain.AmbulanceBooking;
+import com.abs.domain.mappers.AmbulanceBookingMapper;
 import com.abs.service.AmbulanceBookingDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
@@ -42,54 +43,71 @@ public class AmbulanceBookingDAOImpl extends JdbcDaoSupport implements Ambulance
     }
 
     @Override
-    public int createAmbulanceBookingGetId(int patientId, int createdBy, int destination, int origin, boolean cardiac, boolean urgent, String dateOfTransfer) {
+    @Transactional
+    public int createAmbulanceBookingGetId(int patientId, int createdBy, int destination, int origin,
+                                           boolean cardiac, boolean urgent, String dateOfTransfer) {
 
-            String SQL = "INSERT INTO ambulancebooking (patientId, createdBy, destination, "
-                    + "origin, cardiac, urgent, creationDateTime, transferDateTime"
-                    + "VALUES(?, ?, ?, ?, ?, ?, getDate(),?))";
+        String SQL = "INSERT INTO ambulancebooking (patientId, createdBy, destination, "
+                + "origin, cardiac, urgent, creationDateTime, transferDateTime, archived) "
+                + "VALUES(?, ?, ?, ?, ?, ?, GETDATE(),?,false)";
 
-            Object[] params=new Object[]{ firstName, lastName, studentNumber,email,phoneNumber,addressLine1,addressLine2};
-            PreparedStatementCreatorFactory psc=new PreparedStatementCreatorFactory(SQL);
-            psc.addParameter(new SqlParameter("firstName", Types.VARCHAR));
-            psc.addParameter(new SqlParameter("lastName", Types.VARCHAR));
-            psc.addParameter(new SqlParameter("studentNumber", Types.VARCHAR));
-            psc.addParameter(new SqlParameter("email", Types.VARCHAR));
-            psc.addParameter(new SqlParameter("phoneNumber", Types.VARCHAR));
-            psc.addParameter(new SqlParameter("addressLine1", Types.VARCHAR));
-            psc.addParameter(new SqlParameter("addressLine2", Types.VARCHAR));
+        Object[] params=new Object[]{ patientId, createdBy, destination,origin,cardiac,urgent,dateOfTransfer};
+        PreparedStatementCreatorFactory psc=new PreparedStatementCreatorFactory(SQL);
+        psc.addParameter(new SqlParameter("patientId", Types.INTEGER));
+        psc.addParameter(new SqlParameter("createdBy", Types.INTEGER));
+        psc.addParameter(new SqlParameter("destination", Types.INTEGER));
+        psc.addParameter(new SqlParameter("origin", Types.INTEGER));
+        psc.addParameter(new SqlParameter("cardiac", Types.BOOLEAN));
+        psc.addParameter(new SqlParameter("urgent", Types.BOOLEAN));
+        psc.addParameter(new SqlParameter("dateOfTransfer", Types.DATE));
 
-            KeyHolder holder = new GeneratedKeyHolder();
-            getJdbcTemplate().update(psc.newPreparedStatementCreator(params), holder);
+        KeyHolder holder = new GeneratedKeyHolder();
+        getJdbcTemplate().update(psc.newPreparedStatementCreator(params), holder);
 
-            System.out.println("holder:"+holder.getKey().toString());
-            String key=holder.getKey().toString();
-            return Integer.parseInt(key);
-        }
+        String key=holder.getKey().toString();
+        System.out.println("Created ambulance booking with id: " + key );
+        return Integer.parseInt(key);
+    }
 
     @Override
+    @Transactional
     public void deleteAmbulanceBooking(int id) {
-
+        String SQL = "update ambulancebooking set archived = true where id = ?";
+        getJdbcTemplate().update(SQL, new Object[] {id});
+        System.out.println("Archived ambulance booking where id: " + id );
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public AmbulanceBooking getBooking(int id) {
-        return null;
+        String SQL = "select * from ambulancebooking where id = ? and archived = false";
+        AmbulanceBooking ab = (AmbulanceBooking) getJdbcTemplate().queryForObject(SQL,
+                new Object[]{id}, new AmbulanceBookingMapper());
+        return ab;
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public List<AmbulanceBooking> getAllBookings() {
-        return null;
+        String SQL = "select * from ambulancebooking where archived = false";
+        List<AmbulanceBooking> abList = getJdbcTemplate().query(SQL,
+                new AmbulanceBookingMapper());
+        return abList;
     }
 
     @Override
     public void setAmbulanceCompany(int id, int ambulanceCompanyId) {
-
+        String SQL = "update ambulancebooking set ambCompanyId = ? where id = ?";
+        getJdbcTemplate().update(SQL, new Object[] {ambulanceCompanyId,id});
     }
 
     @Override
     public void setApproval(int id, boolean approval) {
-
+        String SQL = "update ambulancebooking set approval = ? where id = ?";
+        getJdbcTemplate().update(SQL, new Object[] {approval,id});
     }
+
+    //TODO Add update for admin modification
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
