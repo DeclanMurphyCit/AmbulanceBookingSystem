@@ -32,9 +32,10 @@ public class BrokerDataGenerator {
         ab.setCardiac(true);
         ab.setCost(1500.00);
 
-        AmbulanceCompany ac = new AmbulanceCompany();
-        ac.setCost(9999.00);
-        ab.setAmbCompany(ac);
+        //AmbulanceCompany ac = new AmbulanceCompany();
+        //ac.setCardiac(false);
+        //ac.setCost(9999.00);
+        //ab.setAmbCompany(ac);
 
         ambBookingList.add(ab);
 
@@ -54,6 +55,7 @@ public class BrokerDataGenerator {
             ac.setCardiac(r.nextBoolean());
             ac.setName("BOOKING-"+i);
             ac.setCost(750 + (2250) * r.nextDouble());
+            ac.setCostScore((int) ac.getCost());
             ambCompanyList.add(ac);
         }
 

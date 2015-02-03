@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class PatientMapper implements RowMapper {
 
     @Override
-    public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+         public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         int id = rs.getInt("id");
         String firstName = rs.getString("firstName");
         String lastName = rs.getString("lastName");

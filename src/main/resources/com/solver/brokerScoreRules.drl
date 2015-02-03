@@ -1,34 +1,24 @@
 package org.optaplanner.examples.cloudbalancing.solver;
     dialect "java"
 
-//import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
+import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
 import org.optaplanner.core.api.score.buildin.simple.SimpleScoreHolder;
 
 import com.abs.domain.AmbulanceBooking;
 import com.abs.domain.AmbulanceCompany;
 //import org.kie.api.runtime;
 
-global SimpleScoreHolder scoreHolder;
+global HardSoftScoreHolder scoreHolder;
 
 // ############################################################################
 // Hard constraints
 // ############################################################################
 
-rule "lowCostRule"
+rule "isCardiac"
     when
-
-        //AmbulanceBooking(AmbulanceCompany)
-
-        //AmbulanceCompany(cardiac==false)
-        $ac : AmbulanceCompany(cardiac==false)
-
-
-
+        $ac : AmbulanceCompany(cardiac==true)
     then
-        scoreHolder.addConstraintMatch((org.kie.api.runtime.rule.RuleContext)kcontext,-1);
-        //scoreHolder.addConstraintMatch( (org.kie.api.runtime.rule.RuleContext) kcontext, -1);
-       // scoreHolder.addHardConstraintMatch(  (org.kie.api.runtime.rule.RuleContext) kcontext, -1);
-
+        scoreHolder.addHardConstraintMatch(kcontext,-1);
 end
 
 /*rule "requiredCpuPowerTotal"
@@ -73,6 +63,15 @@ end*/
 // ############################################################################
 // Soft constraints
 // ############################################################################
+
+rule "lowestPrice"
+    when
+        $ac : AmbulanceCompany($cost : costScore)
+    //    exists AmbulanceBooking(AmbulanceCompany = $ac)
+    then
+
+        scoreHolder.addSoftConstraintMatch(kcontext,-$cost);
+end
 
 /*
 rule "computerCost"

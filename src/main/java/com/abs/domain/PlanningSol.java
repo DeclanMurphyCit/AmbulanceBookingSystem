@@ -6,7 +6,7 @@ import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.solution.Solution;
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
-import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
+//import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,11 +18,11 @@ import java.util.List;
 
 @PlanningSolution
 @XStreamAlias("PlanningSol")
-public class PlanningSol implements Solution <SimpleScore> {
+public class PlanningSol implements Solution <HardSoftScore> {
 
     private List<AmbulanceCompany> acList;
     private List<AmbulanceBooking> abList;
-    private SimpleScore score;
+    private HardSoftScore score;
 
     @ValueRangeProvider(id = "acRange")
     public List<AmbulanceCompany> getAcList() {
@@ -42,11 +42,11 @@ public class PlanningSol implements Solution <SimpleScore> {
         this.abList = abList;
     }
 
-    public SimpleScore getScore() {
+    public HardSoftScore getScore() {
         return score;
     }
 
-    public void setScore(SimpleScore score) {
+    public void setScore(HardSoftScore score) {
         this.score = score;
     }
 

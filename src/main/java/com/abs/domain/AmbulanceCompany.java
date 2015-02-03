@@ -9,6 +9,7 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	private int id;
 	private String name;
 	private double cost;
+	private int costScore;
 	private String timeActive;
 	private String timeInactive;
 	private boolean cardiac;
@@ -71,5 +72,14 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	}
 	public void setCardiac(boolean cardiac) {
 		this.cardiac = cardiac;
+	}
+
+	public int getCostScore() {
+		System.out.println("CS: "+costScore);
+		return costScore;
+	}
+
+	public void setCostScore(int costScore) {
+		this.costScore = costScore;
 	}
 }
