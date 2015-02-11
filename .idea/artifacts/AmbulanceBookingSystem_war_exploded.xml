@@ -13,15 +13,14 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.1.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.1.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:4.1.1.RELEASE" />
-          <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.1.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.1.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.dbunit:dbunit:2.4.9" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.5.6" />
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.7.10" />
-          <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.5.8" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.5.8" />
+          <element id="library" level="project" name="Maven: log4j:log4j:1.2.14" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.6" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:4.1.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.1.1.RELEASE" />
@@ -64,6 +63,8 @@
           <element id="library" level="project" name="Maven: ognl:ognl:2.7.3" />
           <element id="library" level="project" name="Maven: jboss:javassist:3.7.ga" />
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-compat:3.0.1" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-validator:4.2.0.Final" />
+          <element id="library" level="project" name="Maven: javax.validation:validation-api:1.0.0.GA" />
           <element id="library" level="project" name="Maven: joda-time:joda-time:2.7" />
           <element id="library" level="project" name="Maven: org.optaplanner:optaplanner-benchmark:6.2.0.CR3" />
           <element id="library" level="project" name="Maven: org.optaplanner:optaplanner-core:6.2.0.CR3" />

@@ -28,6 +28,7 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -87,8 +88,13 @@
 
         <dependency>
             <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.5.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.10</version>
+            <version>1.5.8</version>
         </dependency>
 
         <!-- repository -->
@@ -130,8 +136,6 @@
             <version>3.2.5.RELEASE</version>
         </dependency>
 
-
-
         <!--Tiles -->
         <dependency>
             <groupId>org.apache.tiles</groupId>
@@ -170,6 +174,18 @@
         </dependency>
 
         <!-- misc -->
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+            <version>4.2.0.Final</version>
+        </dependency>
 
         <dependency>
             <groupId>joda-time</groupId>

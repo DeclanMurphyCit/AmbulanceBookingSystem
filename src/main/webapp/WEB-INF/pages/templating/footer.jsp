@@ -1,19 +1,13 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Declan
-  Date: 04/02/2015
-  Time: 20:07
-  To change this template use File | Settings | File Templates.
---%>
-<%@ include file="/WEB-INF/pages/include.jsp"%>
-<html>
-<head>
-  <title>Footer</title>
-  <link href="<c:url value="/resources/css/citonline.css" />" rel="stylesheet">
-</head>
-<body>
-<div data-role="footer" style="text-align:center;" data-position="fixed">
-  <p>Copyright &copy; 2014 </p>
 </div>
-</body>
-</html>
+</div>
+
+<div id="footer" data-role="footer" style="text-align:center;" data-position="fixed">
+    <div class="container">
+      <p align="right" class="muted credit">&copy; Declan Murphy 2015</p>
+    </div>
+  </div>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="<%= request.getContextPath() %>/resources/bootstrap/js/bootstrap.min.js"></script>

@@ -27,13 +27,13 @@ public class AmbulanceBooking {
     private boolean urgent;
     private boolean approved;
     private double cost;
-    private Date dateCreated;
-    private Date dateOfTransfer;
+    private String dateCreated;
+    private String dateOfTransfer;
 
 
     public AmbulanceBooking(int bookingId, int patientId,int ambCompanyId, int createdBy,
                             int destination, int origin, boolean cardiac,
-                            boolean urgent, Date dateCreated, Date dateOfTransfer) {
+                            boolean urgent, String dateCreated, String dateOfTransfer) {
         this.bookingId = bookingId;
         this.patientId = patientId;
         this.ambCompanyId = ambCompanyId;
@@ -120,11 +120,11 @@ public class AmbulanceBooking {
         return cost;
     }
 
-    public Date getDateCreated() {
+    public String getDateCreated() {
         return dateCreated;
     }
 
-    public Date getDateOfTransfer() {
+    public String getDateOfTransfer() {
         return dateOfTransfer;
     }
 
@@ -168,11 +168,11 @@ public class AmbulanceBooking {
         this.cost = cost;
     }
 
-    public void setDateCreated(Date dateCreated) {
+    public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public void setDateOfTransfer(Date dateOfTransfer) {
+    public void setDateOfTransfer(String dateOfTransfer) {
         this.dateOfTransfer = dateOfTransfer;
     }
 }
