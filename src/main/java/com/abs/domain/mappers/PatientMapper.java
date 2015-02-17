@@ -13,10 +13,10 @@ public class PatientMapper implements RowMapper {
 
     @Override
          public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-        int id = rs.getInt("id");
+        Integer id = rs.getInt("id");
         String firstName = rs.getString("firstName");
         String lastName = rs.getString("lastName");
-        int wardId = rs.getInt("wardId");
+        Integer wardId = rs.getInt("wardId");
 
         Patient l = new Patient(id,firstName,lastName,wardId);
         return l;

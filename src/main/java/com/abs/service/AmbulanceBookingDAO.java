@@ -14,18 +14,18 @@ import java.util.List;
 public interface AmbulanceBookingDAO {
     public void setDataSource(DataSource dataSource);
 
-    public int createAmbulanceBookingGetId(int patientId, int createdBy, int destination,
-                                           int origin, boolean cardiac,boolean urgent, String dateOfTransfer);
+    public Integer createAmbulanceBookingGetId(Integer patientId, Integer createdBy, Integer destination,
+                                           Integer origin, boolean cardiac,boolean urgent, String dateOfTransfer);
 
-    public void deleteAmbulanceBooking(int id);
+    public void deleteAmbulanceBooking(Integer id);
 
-    public AmbulanceBooking getBooking(int id);
+    public AmbulanceBooking getBooking(Integer id);
 
     public List<AmbulanceBooking> getAllBookings();
 
-    public void setAmbulanceCompany(int id, int ambulanceCompanyId);
+    public void setAmbulanceCompany(Integer id, Integer ambulanceCompanyId);
 
-    public void setApproval(int id, boolean approval);
+    public void setApproval(Integer id, boolean approval);
 
-    public int countRows();
+    public Integer countRows();
 }

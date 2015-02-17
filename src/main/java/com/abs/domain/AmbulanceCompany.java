@@ -6,15 +6,15 @@ import java.util.Date;
 @XStreamAlias("AmbulanceCompany")
 public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	
-	private int id;
+	private Integer id;
 	private String name;
 	private double cost;
-	private int costScore;
+	private Integer costScore;
 	private String timeActive;
 	private String timeInactive;
 	private boolean cardiac;
 		
-	public AmbulanceCompany(int id, String name, double cost, String timeActive,
+	public AmbulanceCompany(Integer id, String name, double cost, String timeActive,
 							String timeInactive, boolean cardiac) {
 		super();
 		this.id = id;
@@ -37,10 +37,10 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	
 	public AmbulanceCompany(){}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -74,12 +74,12 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 		this.cardiac = cardiac;
 	}
 
-	public int getCostScore() {
+	public Integer getCostScore() {
 		System.out.println("CS: "+costScore);
 		return costScore;
 	}
 
-	public void setCostScore(int costScore) {
+	public void setCostScore(Integer costScore) {
 		this.costScore = costScore;
 	}
 }

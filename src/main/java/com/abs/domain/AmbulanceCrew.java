@@ -2,12 +2,12 @@ package com.abs.domain;
 
 public class AmbulanceCrew {
 	
-	private int id;
-	private int ambCompanyId;
-	private int userId;
+	private Integer id;
+	private Integer ambCompanyId;
+	private Integer userId;
 	private boolean active;
 	
-	public AmbulanceCrew(int id,int ambCompanyId, int userId, boolean active) {
+	public AmbulanceCrew(Integer id,Integer ambCompanyId, Integer userId, boolean active) {
 		super();
 		this.id = id;
 		this.ambCompanyId = ambCompanyId;
@@ -15,7 +15,7 @@ public class AmbulanceCrew {
 		this.active = active;
 	}
 	
-	public AmbulanceCrew(int ambCompanyId, int userId,boolean active) {
+	public AmbulanceCrew(Integer ambCompanyId, Integer userId,boolean active) {
 		super();
 		this.ambCompanyId = ambCompanyId;
 		this.userId = userId;
@@ -24,22 +24,22 @@ public class AmbulanceCrew {
 	
 	public AmbulanceCrew(){}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-	public int getAmbCompanyId() {
+	public Integer getAmbCompanyId() {
 		return ambCompanyId;
 	}
-	public void setAmbCompanyId(int ambCompanyId) {
+	public void setAmbCompanyId(Integer ambCompanyId) {
 		this.ambCompanyId = ambCompanyId;
 	}
 	public boolean isActive() {

@@ -2,12 +2,12 @@ package com.abs.domain;
 
 public class Patient {
 	
-	private int id;
+	private Integer id;
 	private String firstName;
 	private String lastName;
-	private int wardId;	
+	private Integer wardId;
 	
-	public Patient(int id, String firstName, String lastName, int wardId) {
+	public Patient(Integer id, String firstName, String lastName, Integer wardId) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -15,7 +15,7 @@ public class Patient {
 		this.wardId = wardId;
 	}
 	
-	public Patient(String firstName, String lastName, int wardId) {
+	public Patient(String firstName, String lastName, Integer wardId) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -24,10 +24,10 @@ public class Patient {
 	
 	public Patient(){}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getFirstName() {
@@ -42,10 +42,10 @@ public class Patient {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public int getWardId() {
+	public Integer getWardId() {
 		return wardId;
 	}
-	public void setWardId(int wardId) {
+	public void setWardId(Integer wardId) {
 		this.wardId = wardId;
 	}
 	

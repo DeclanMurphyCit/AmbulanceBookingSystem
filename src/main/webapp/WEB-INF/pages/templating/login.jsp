@@ -11,15 +11,18 @@
   <form name="f" action="<c:url value='j_spring_security_check'/>" method="POST">
 
     <div class="ui-field-contain">
-      <label for="fullname">Username:</label>
-      <input type="text" name="j_username">
+      <label for="j_username">Username:</label>
+      <input type="text" id="j_username" name="j_username">
     </div>
 
     <div class="ui-field-contain">
-      <label for="fullname">Password:</label>
-      <input type="password" name="j_password">
+      <label for="j_password">Password:</label>
+      <input type="password" name="j_password" id="j_password">
     </div>
 
     <input name="submit" type="submit" value="Login" />
   </form>
 </div>
+
+<script src="<%= request.getContextPath() %>/resources/jquery-1.11.2.min.js"></script>
+<script src="<%= request.getContextPath() %>/resources/bootstrap/js/bootstrap.min.js"></script>

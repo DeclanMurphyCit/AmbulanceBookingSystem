@@ -15,13 +15,13 @@ import java.util.List;
 public interface AmbulanceCompanyDAO {
     public void setDataSource(DataSource dataSource);
 
-    public int createAmbulanceCompanyGetId(String name, BigDecimal cost, boolean cardiac, String timeActive, String timeInactive);
+    public Integer createAmbulanceCompanyGetId(String name, BigDecimal cost, boolean cardiac, String timeActive, String timeInactive);
 
-    public void deleteAmbulanceCompany(int id);
+    public void deleteAmbulanceCompany(Integer id);
 
-    public AmbulanceCompany getCompany(int id);
+    public AmbulanceCompany getCompany(Integer id);
 
     public List<AmbulanceCompany> getAllCompanies();
     
-    public int countRows();
+    public Integer countRows();
 }

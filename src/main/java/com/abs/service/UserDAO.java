@@ -15,5 +15,5 @@ public interface UserDAO {
 
     public void setDataSource(DataSource dataSource);
 
-    public User getUser(int id);
+    public User getUser(Integer id);
 }

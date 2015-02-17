@@ -45,7 +45,7 @@ public class AmbulanceCompanyDAOImpl  extends JdbcDaoSupport implements Ambulanc
 
     @Override
     @Transactional
-    public int createAmbulanceCompanyGetId(String name, BigDecimal cost, boolean cardiac,
+    public Integer createAmbulanceCompanyGetId(String name, BigDecimal cost, boolean cardiac,
                                            String timeActive, String timeInactive) {
 
         String SQL = "INSERT INTO ambulancecompany (name, cost, cardiac, timeActive, timeInactive, archived) "
@@ -69,16 +69,16 @@ public class AmbulanceCompanyDAOImpl  extends JdbcDaoSupport implements Ambulanc
 
     @Override
     @Transactional
-    public void deleteAmbulanceCompany(int id) {
-        String SQL = "update ambulancecompany set archived = true where id = ?";
+    public void deleteAmbulanceCompany(Integer id) {
+        String SQL = "update ambulancecompany set archived = 'y' where id = ?";
         getJdbcTemplate().update(SQL, new Object[] {id});
         System.out.println("Archived ambulance company where id: " + id );
     }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-    public AmbulanceCompany getCompany(int id) {
-        String SQL = "select * from ambulancecompany where id = ? and archived = false";
+    public AmbulanceCompany getCompany(Integer id) {
+        String SQL = "select * from ambulancecompany where id = ? and archived = 'n'";
         AmbulanceCompany ac = (AmbulanceCompany) getJdbcTemplate().queryForObject(SQL,
                 new Object[]{id}, new AmbulanceCompanyMapper());
         return ac;
@@ -87,7 +87,7 @@ public class AmbulanceCompanyDAOImpl  extends JdbcDaoSupport implements Ambulanc
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public List<AmbulanceCompany> getAllCompanies() {
-        String SQL = "select * from ambulancecompany where archived = false";
+        String SQL = "select * from ambulancecompany where archived = 'n'";
         List<AmbulanceCompany> acList = getJdbcTemplate().query(SQL,
                 new AmbulanceCompanyMapper());
         return acList;
@@ -95,9 +95,9 @@ public class AmbulanceCompanyDAOImpl  extends JdbcDaoSupport implements Ambulanc
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-    public int countRows() {
+    public Integer countRows() {
         String SQL = "select count(id) from ambulancecompany";
-        int rows=getJdbcTemplate().queryForObject(SQL, Integer.class);
+        Integer rows=getJdbcTemplate().queryForObject(SQL, Integer.class);
         return rows;
     }
 }

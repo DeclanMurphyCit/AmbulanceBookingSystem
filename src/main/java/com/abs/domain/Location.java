@@ -2,10 +2,10 @@ package com.abs.domain;
 
 public class Location {
 	
-	private int id;
+	private Integer id;
 	private String name;	
 	
-	public Location(int id, String name) {
+	public Location(Integer id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -18,10 +18,10 @@ public class Location {
 	
 	public Location(){}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getName() {

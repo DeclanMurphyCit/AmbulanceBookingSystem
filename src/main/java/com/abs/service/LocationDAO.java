@@ -14,13 +14,13 @@ import java.util.List;
 public interface LocationDAO {
     public void setDataSource(DataSource dataSource);
 
-    public int createLocationGetId(String name);
+    public Integer createLocationGetId(String name);
 
-    public void deleteLocation(int id);
+    public void deleteLocation(Integer id);
 
-    public Location getLocation(int id);
+    public Location getLocation(Integer id);
 
     public List<Location> getAllLocations();
 
-    public int countRows();
+    public Integer countRows();
 }

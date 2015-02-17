@@ -13,7 +13,7 @@ public class UserMapper  implements RowMapper {
 
     @Override
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-        int id = rs.getInt("id");
+        Integer id = rs.getInt("id");
         String firstname = rs.getString("firstname");
         String lastname = rs.getString("lastname");
         String username = rs.getString("username");

@@ -15,14 +15,14 @@ import java.util.Date;
 @XStreamAlias("AmbulanceBooking")
 public class AmbulanceBooking {
 
-    private int bookingId;
-    private int patientId;
+    private Integer bookingId;
+    private Integer patientId;
     private AmbulanceCompany ambCompany;
-    private int ambCompanyId;
-    private int ambCrewId;
-    private int createdBy; //User
-    private int destination;
-    private int origin;
+    private Integer ambCompanyId;
+    private Integer ambCrewId;
+    private Integer createdBy; //User
+    private Integer destination;
+    private Integer origin;
     private boolean cardiac;
     private boolean urgent;
     private boolean approved;
@@ -31,9 +31,9 @@ public class AmbulanceBooking {
     private String dateOfTransfer;
 
 
-    public AmbulanceBooking(int bookingId, int patientId,int ambCompanyId, int createdBy,
-                            int destination, int origin, boolean cardiac,
-                            boolean urgent, String dateCreated, String dateOfTransfer) {
+    public AmbulanceBooking(Integer bookingId, Integer patientId,Integer ambCompanyId, Integer createdBy,
+                            Integer destination, Integer origin, boolean cardiac,
+                            boolean urgent, boolean approved, double cost, String dateCreated, String dateOfTransfer) {
         this.bookingId = bookingId;
         this.patientId = patientId;
         this.ambCompanyId = ambCompanyId;
@@ -42,12 +42,14 @@ public class AmbulanceBooking {
         this.origin = origin;
         this.cardiac = cardiac;
         this.urgent = urgent;
+        this.approved = approved;
+        this.cost = cost;
         this.dateCreated = dateCreated;
         this.dateOfTransfer = dateOfTransfer;
     }
 
-    public AmbulanceBooking(int bookingId, int patientId,int ambCompanyId, int createdBy,
-                            int destination, int origin, boolean cardiac,
+    public AmbulanceBooking(Integer bookingId, Integer patientId,Integer ambCompanyId, Integer createdBy,
+                            Integer destination, Integer origin, boolean cardiac,
                             boolean urgent/*, Date dateCreated, Date dateOfTransfer*/) { //TODO Add date functionality
         this.bookingId = bookingId;
         this.patientId = patientId;
@@ -72,35 +74,35 @@ public class AmbulanceBooking {
         this.ambCompany = ambCompany;
     }
 
-    public int getAmbCompanyId() {
+    public Integer getAmbCompanyId() {
         return ambCompanyId;
     }
 
-    public void setAmbCompanyId(int ambCompanyId) {
+    public void setAmbCompanyId(Integer ambCompanyId) {
         this.ambCompanyId = ambCompanyId;
     }
 
-    public int getBookingId() {
+    public Integer getBookingId() {
         return bookingId;
     }
 
-    public int getPatientId() {
+    public Integer getPatientId() {
         return patientId;
     }
 
-    public int getAmbCrewId() {
+    public Integer getAmbCrewId() {
         return ambCrewId;
     }
 
-    public int getCreatedBy() {
+    public Integer getCreatedBy() {
         return createdBy;
     }
 
-    public int getDestination() {
+    public Integer getDestination() {
         return destination;
     }
 
-    public int getOrigin() {
+    public Integer getOrigin() {
         return origin;
     }
 
@@ -128,27 +130,27 @@ public class AmbulanceBooking {
         return dateOfTransfer;
     }
 
-    public void setBookingId(int bookingId) {
+    public void setBookingId(Integer bookingId) {
         this.bookingId = bookingId;
     }
 
-    public void setPatientId(int patientId) {
+    public void setPatientId(Integer patientId) {
         this.patientId = patientId;
     }
 
-    public void setAmbCrewId(int ambCrewId) {
+    public void setAmbCrewId(Integer ambCrewId) {
         this.ambCrewId = ambCrewId;
     }
 
-    public void setCreatedBy(int createdBy) {
+    public void setCreatedBy(Integer createdBy) {
         this.createdBy = createdBy;
     }
 
-    public void setDestination(int destination) {
+    public void setDestination(Integer destination) {
         this.destination = destination;
     }
 
-    public void setOrigin(int origin) {
+    public void setOrigin(Integer origin) {
         this.origin = origin;
     }
 

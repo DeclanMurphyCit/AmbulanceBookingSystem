@@ -35,8 +35,8 @@ public class UserDAOImpl extends JdbcDaoSupport implements UserDAO {
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-    public User getUser(int id) {
-        String SQL = "select * from patient where id = ? and archived = false";
+    public User getUser(Integer id) {
+        String SQL = "select * from patient where id = ? and archived = 'n'";
         User p = (User) getJdbcTemplate().queryForObject(SQL,
                 new Object[]{id}, new UserMapper());
         return p;

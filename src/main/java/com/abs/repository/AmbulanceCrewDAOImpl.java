@@ -45,7 +45,7 @@ public class AmbulanceCrewDAOImpl extends JdbcDaoSupport implements AmbulanceCre
 
     @Override
     @Transactional
-    public int createAmbulanceCrewGetId(int ambCompanyId, int userId) {
+    public Integer createAmbulanceCrewGetId(Integer ambCompanyId, Integer userId) {
         String SQL = "INSERT INTO ambulancecrew (ambCompanyId, userId, archived) "
                 + "VALUES(?, ?, false)";
 
@@ -64,16 +64,16 @@ public class AmbulanceCrewDAOImpl extends JdbcDaoSupport implements AmbulanceCre
 
     @Override
     @Transactional
-    public void deleteAmbulanceCrew(int id) {
-        String SQL = "update ambulancecrew set archived = true where id = ?";
+    public void deleteAmbulanceCrew(Integer id) {
+        String SQL = "update ambulancecrew set archived = 'y' where id = ?";
         getJdbcTemplate().update(SQL, new Object[] {id});
         System.out.println("Archived ambulance crew where id: " + id );
     }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-    public AmbulanceCrew getCrew(int id) {
-        String SQL = "select * from ambulancecrew where id = ? and archived = false";
+    public AmbulanceCrew getCrew(Integer id) {
+        String SQL = "select * from ambulancecrew where id = ? and archived = 'n'";
         AmbulanceCrew ac = (AmbulanceCrew) getJdbcTemplate().queryForObject(SQL,
                 new Object[]{id}, new AmbulanceCrewMapper());
         return ac;
@@ -82,7 +82,7 @@ public class AmbulanceCrewDAOImpl extends JdbcDaoSupport implements AmbulanceCre
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public List<AmbulanceCrew> getAllCrews() {
-        String SQL = "select * from ambulancecrew where archived = false";
+        String SQL = "select * from ambulancecrew where archived = 'n'";
         List<AmbulanceCrew> acList = getJdbcTemplate().query(SQL,
                 new AmbulanceCrewMapper());
         return acList;
@@ -90,9 +90,9 @@ public class AmbulanceCrewDAOImpl extends JdbcDaoSupport implements AmbulanceCre
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-    public int countRows() {
+    public Integer countRows() {
         String SQL = "select count(id) from ambulancecrew";
-        int rows=getJdbcTemplate().queryForObject(SQL, Integer.class);
+        Integer rows=getJdbcTemplate().queryForObject(SQL, Integer.class);
         return rows;
     }
 }

@@ -15,21 +15,22 @@ public class AmbulanceBookingMapper  implements RowMapper {
 
     @Override
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-        int id = rs.getInt("id");
-        //TODO Add in patientId or patient object?
-        int ambCompanyId = rs.getInt("ambCompanyId");
-        int patientId = rs.getInt("patientId");
-        int createdBy = rs.getInt("createdBy");
-        int destination = rs.getInt("destination");
-        int origin = rs.getInt("origin");
+        Integer id = rs.getInt("id");
+        Integer ambCompanyId = rs.getInt("ambCompanyId");
+        Integer patientId = rs.getInt("patientId");
+        Integer createdBy = rs.getInt("createdBy");
+        Integer destination = rs.getInt("destination");
+        Integer origin = rs.getInt("origin");
         boolean cardiac = rs.getBoolean("cardiac");
         boolean urgent = rs.getBoolean("urgent");
         boolean approved = rs.getBoolean("approved");
         double cost = rs.getDouble("cost");
+        String dateCreated = rs.getString("creationDateTime");
+        dateCreated = dateCreated.substring(0, dateCreated.length()-3);
+        String dateOfTransfer = rs.getString("transferDateTime");
 
         AmbulanceBooking a = new AmbulanceBooking(id, patientId,ambCompanyId, createdBy,
-        destination, origin, cardiac,
-        urgent/*, dateCreated, dateOfTransfer*/);//TODO Add date functionality
+        destination, origin, cardiac,urgent, approved, cost, dateCreated, dateOfTransfer);
 
         return a;
     }

@@ -41,21 +41,21 @@ public class PatientDAOImpl extends JdbcDaoSupport implements PatientDAO {
 
 /*    @Override
     @Transactional
-    public int createPatientGetId(String name) {
+    public Integer createPatientGetId(String name) {
         return 0;
     }*/
 
 /*
     @Override
-    public void deletePatient(int id) {
+    public void deletePatient(Integer id) {
 
     }
 */
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-    public Patient getPatient(int id) {
-        String SQL = "select * from patient where id = ? and archived = false";
+    public Patient getPatient(Integer id) {
+        String SQL = "select * from patient where id = ? and archived = 'n'";
         Patient p = (Patient) getJdbcTemplate().queryForObject(SQL,
                 new Object[]{id}, new PatientMapper());
         return p;
@@ -63,8 +63,8 @@ public class PatientDAOImpl extends JdbcDaoSupport implements PatientDAO {
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-    public List<Patient> getAllPatientsFromWard(int wardId) {
-        String SQL = "select * from patient where archived = false and wardId = ?";
+    public List<Patient> getAllPatientsFromWard(Integer wardId) {
+        String SQL = "select * from patient where archived = 'n' and wardId = ?";
         List<Patient> patList = getJdbcTemplate().query(SQL,
                 new Object[]{wardId}, new PatientMapper());
         return patList;

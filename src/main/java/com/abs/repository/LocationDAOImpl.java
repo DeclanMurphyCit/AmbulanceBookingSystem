@@ -44,9 +44,9 @@ public class LocationDAOImpl extends JdbcDaoSupport implements LocationDAO {
 
     @Override
     @Transactional
-    public int createLocationGetId(String name) {
-        String SQL = "INSERT INTO location (name,archived) "
-                + "VALUES(?, false)";
+    public Integer createLocationGetId(String name) {
+        String SQL = "INSERT INTO location (name) "
+                + "VALUES(?)";
 
         Object[] params=new Object[]{ name};
         PreparedStatementCreatorFactory psc=new PreparedStatementCreatorFactory(SQL);
@@ -62,16 +62,16 @@ public class LocationDAOImpl extends JdbcDaoSupport implements LocationDAO {
 
     @Override
     @Transactional
-    public void deleteLocation(int id) {
-        String SQL = "update location set archived = true where id = ?";
+    public void deleteLocation(Integer id) {
+        String SQL = "update location set archived = 'y' where id = ?";
         getJdbcTemplate().update(SQL, new Object[] {id});
         System.out.println("Archived location where id: " + id );
     }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-    public Location getLocation(int id) {
-        String SQL = "select * from location where id = ? and archived = false";
+    public Location getLocation(Integer id) {
+        String SQL = "select * from location where id = ? and archived = 'n'";
         Location ac = (Location) getJdbcTemplate().queryForObject(SQL,
                 new Object[]{id}, new LocationMapper());
         return ac;
@@ -80,7 +80,7 @@ public class LocationDAOImpl extends JdbcDaoSupport implements LocationDAO {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public List<Location> getAllLocations() {
-        String SQL = "select * from location where archived = false";
+        String SQL = "select * from location";
         List<Location> locList = getJdbcTemplate().query(SQL,
                 new LocationMapper());
         return locList;
@@ -88,9 +88,9 @@ public class LocationDAOImpl extends JdbcDaoSupport implements LocationDAO {
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-    public int countRows() { //TODO Add where archived = false?
+    public Integer countRows() {
         String SQL = "select count(id) from location";
-        int rows=getJdbcTemplate().queryForObject(SQL, Integer.class);
+        Integer rows=getJdbcTemplate().queryForObject(SQL, Integer.class);
         return rows;
     }
 }

@@ -22,5 +22,29 @@
         <put-attribute name="body" value="/WEB-INF/pages/home.jsp"></put-attribute>
     </definition>
 
+    <definition extends="base.definition" name="addNewBooking">
+    <put-attribute name="title" value="Add New Booking"></put-attribute>
+    <put-attribute name="body" value="/WEB-INF/pages/ambulancebookings/addBooking.jsp"></put-attribute>
+    </definition>
+
+    <definition extends="base.definition" name="displayBooking">
+        <put-attribute name="title" value="Display Booking"></put-attribute>
+        <put-attribute name="body" value="/WEB-INF/pages/ambulancebookings/displayBooking.jsp"></put-attribute>
+    </definition>
+
+    <definition extends="base.definition" name="displayBookings">
+        <put-attribute name="title" value="Display Booking"></put-attribute>
+        <put-attribute name="body" value="/WEB-INF/pages/ambulancebookings/displayBookings.jsp"></put-attribute>
+    </definition>
+
+    <definition extends="base.definition" name="bookingPermission">
+        <put-attribute name="title" value="Booking Permission"></put-attribute>
+        <put-attribute name="body" value="/WEB-INF/pages/ambulancebookings/bookingPermission.jsp"></put-attribute>
+    </definition>
+
+    <definition extends="base.definition" name="error">
+        <put-attribute name="title" value="Error"></put-attribute>
+        <put-attribute name="body" value="/WEB-INF/pages/error.jsp"></put-attribute>
+    </definition>
 
 </tiles-definitions>

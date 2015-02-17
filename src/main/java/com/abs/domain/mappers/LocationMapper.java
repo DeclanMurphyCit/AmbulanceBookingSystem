@@ -13,7 +13,7 @@ public class LocationMapper implements RowMapper {
 
     @Override
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-        int id = rs.getInt("id");
+        Integer id = rs.getInt("id");
         String name = rs.getString("name");
 
         Location l = new Location(id,name);

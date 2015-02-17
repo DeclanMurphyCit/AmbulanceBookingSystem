@@ -13,8 +13,8 @@ public class AmbulanceCrewMapper   implements RowMapper {
 
     @Override
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-        int id = rs.getInt("id");
-        int ambCompanyId = rs.getInt("ambCompanyId");
+        Integer id = rs.getInt("id");
+        Integer ambCompanyId = rs.getInt("ambCompanyId");
         boolean active = rs.getBoolean("active");
         AmbulanceCrew ac = new AmbulanceCrew(id,ambCompanyId,active);
         return ac;

@@ -15,14 +15,14 @@ public interface PatientDAO {
 
     public void setDataSource(DataSource dataSource);
 
-/*    public int createPatientGetId(String name);*/
+/*    public Integer createPatientGetId(String name);*/
 
-/*    public void deletePatient(int id);*/
+/*    public void deletePatient(Integer id);*/
 
-    public Patient getPatient(int id);
+    public Patient getPatient(Integer id);
 
-    public List<Patient> getAllPatientsFromWard(int wardId);
+    public List<Patient> getAllPatientsFromWard(Integer wardId);
     
-/*    public int countRows();*/
+/*    public Integer countRows();*/
 
 }

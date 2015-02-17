@@ -16,7 +16,7 @@ public class BrokerDataGenerator {
 
     protected Random r;
 
-    public PlanningSol createPlanningSol(int numCompanies) {
+    public PlanningSol createPlanningSol(Integer numCompanies) {
 
         PlanningSol planningSol = new PlanningSol();
         planningSol.setAbList(createBooking());
@@ -42,12 +42,12 @@ public class BrokerDataGenerator {
         return ambBookingList;
     }
 
-    public List<AmbulanceCompany> createCompaniesList(int numCompanies)
+    public List<AmbulanceCompany> createCompaniesList(Integer numCompanies)
     {
         List<AmbulanceCompany> ambCompanyList = new ArrayList<AmbulanceCompany>(numCompanies);
         r = new Random();
 
-        for(int i = 0; i < numCompanies ; i++)
+        for(Integer i = 0; i < numCompanies ; i++)
         {
             AmbulanceCompany ac = new AmbulanceCompany();
             ac.setId(i);

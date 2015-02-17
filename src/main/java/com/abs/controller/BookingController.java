@@ -5,13 +5,19 @@ package com.abs.controller;
  */
 
         import java.util.ArrayList;
+        import java.util.HashMap;
         import java.util.List;
+        import java.util.Map;
 
         import javax.servlet.ServletContext;
         import javax.validation.Valid;
 
         import com.abs.domain.AmbulanceBooking;
+        import com.abs.domain.Location;
+        import com.abs.domain.Patient;
         import com.abs.service.AmbulanceBookingDAO;
+        import com.abs.service.LocationDAO;
+        import com.abs.service.PatientDAO;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.stereotype.Controller;
         import org.springframework.ui.ModelMap;
@@ -28,6 +34,10 @@ public class BookingController {
     @Autowired
     AmbulanceBookingDAO ambulanceBookingDAO;
     @Autowired
+    PatientDAO patientDAO;
+    @Autowired
+    LocationDAO locationDAO;
+    @Autowired
     private ServletContext servletContext;
 
     @RequestMapping(value={"/displayBookings"}, method = RequestMethod.GET)
@@ -35,50 +45,68 @@ public class BookingController {
 
         List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllBookings();
         model.addAttribute("bookings", listBookings);
+
+        Map<Integer,String> listPatients = new HashMap<Integer,String>();
+
+        for(AmbulanceBooking b : listBookings)
+        {
+            Patient p = patientDAO.getPatient(b.getPatientId());
+            String patientName = p.getFirstName() + " " + p.getLastName();
+            listPatients.put(b.getBookingId(),patientName );
+        }
+
+        model.addAttribute("patients", listPatients);
+        List<Location> listLoc = locationDAO.getAllLocations();
+        model.addAttribute("locations", listLoc);
         return "displayBookings";
     }
 
     @RequestMapping(value="/displayBooking", method=RequestMethod.GET)
-    public String getBookingByBookingNumber(ModelMap model){
+    public String displayBooking(ModelMap model){
         return "displayBooking";
     }
 
     @RequestMapping(value="/displayBooking/id/{id}", method=RequestMethod.GET)
-    public String displayBookingByBookingNumber(@PathVariable int id,
+    public String displayBookingByBookingNumber(@PathVariable Integer id,
                                                 ModelMap model){
         AmbulanceBooking booking=ambulanceBookingDAO.getBooking(id);
-        model.addAttribute("booking", booking);
+        model.addAttribute("ambulancebooking", booking);
         return "displayBooking";
     }
 
     @RequestMapping(value = "/addNewBooking", method = RequestMethod.GET)
     public String addNewBooking(ModelMap model) {
-        model.addAttribute("booking", new AmbulanceBooking());
+        List<Patient> patientList = patientDAO.getAllPatientsFromWard(2);
+        model.addAttribute("patientList", patientList);
+        List<Location> locationList = locationDAO.getAllLocations();
+        model.addAttribute("locationList", locationList);
+        model.addAttribute("ambulancebooking", new AmbulanceBooking());
         return "addNewBooking";
     }
 
 
     @RequestMapping(value = "/addNewBooking", method = RequestMethod.POST)
-    public String displayAddedBooking(@ModelAttribute("ambulancebooking") @Valid AmbulanceBooking booking,
+    public String addBooking(@ModelAttribute("ambulancebooking")  AmbulanceBooking ambulancebooking,
                                       BindingResult result, ModelMap model) {
 
         if(result.hasErrors())
-            return "addNewBooking";
-        int id;
+            return "error";
+        Integer id;
+
         try {
-            id= ambulanceBookingDAO.createAmbulanceBookingGetId(booking.getPatientId(), booking.getCreatedBy(),
-                    booking.getDestination(), booking.getOrigin(), booking.isCardiac(), booking.isUrgent(),
-                    booking.getDateOfTransfer());
+            id= ambulanceBookingDAO.createAmbulanceBookingGetId(ambulancebooking.getPatientId(), ambulancebooking.getCreatedBy(),
+                    ambulancebooking.getDestination(), ambulancebooking.getOrigin(), ambulancebooking.isCardiac(), ambulancebooking.isUrgent(),
+                    ambulancebooking.getDateOfTransfer());
 
             model.addAttribute("id", id);
 
         } catch (Exception e) {
             model.addAttribute("message", "Creation of booking failed, "+e.getLocalizedMessage());
-            return "errorBooking";
+            return "error";
 
         }
-        model.addAttribute(booking);
-        return "displayBooking";
+        model.addAttribute(ambulancebooking);
+        return "displayBookings";
     }
 
     @RequestMapping(value="/modifyBooking", method = RequestMethod.GET)
@@ -89,19 +117,19 @@ public class BookingController {
     }
 
     @RequestMapping(value ="/modifyBookingForm/id/{id}", method = RequestMethod.GET)
-    public String modifyBookingByID(@PathVariable int id, ModelMap model) {
+    public String modifyBookingByID(@PathVariable Integer id, ModelMap model) {
         AmbulanceBooking bookingModify=ambulanceBookingDAO.getBooking(id);
         model.addAttribute("message", "Booking with id "+ id +" can now be modified");
         model.addAttribute("booking", bookingModify);
         return "modifyBookingForm";
     }
 
-/*    @RequestMapping(value ="/modifyBookingForm/id/{id}/firstName/{firstName}"
-            + "/lastName/{lastName}/bookingNumber/{bookingNumber}/email/{email}"
-            + "/phoneNumber/{phoneNumber}/addressLine1/{addressLine1}/addressLine2/{addressLine2}", method = RequestMethod.GET)
-    public String modifyBookingByID(@PathVariable int id,@PathVariable String firstName,
-                                    @PathVariable String lastName,@PathVariable String bookingNumber,@PathVariable String email,
-                                    @PathVariable String phoneNumber,@PathVariable String addressLine1,@PathVariable String addressLine2, ModelMap model) {
+/*   @RequestMapping(value ="/modifyBookingForm/id/{id}/destination/{destination}"
+            + "/origin/{origin}/cardiac/{cardiac}/urgent/{urgent}"
+            + "/approved/{approved}/transferDateTime/{transferDateTime}", method = RequestMethod.GET)
+    public String modifyBookingByID(@PathVariable Integer id,@PathVariable Integer destination,@PathVariable Integer origin,
+                                    @PathVariable boolean cardiac,@PathVariable boolean urgent,@PathVariable boolean approved,
+           @PathVariable String transferDateTime, ModelMap model) {
 
         ambulanceBookingDAO.updateBooking(id, firstName, lastName, bookingNumber, email, phoneNumber, addressLine1, addressLine2);
 
@@ -119,19 +147,15 @@ public class BookingController {
         model.addAttribute("bookings", listBookings);
         return "removeBooking";
     }
-/*
+
+
     @RequestMapping(value ="/removeBooking/id/{id}", method = RequestMethod.GET)
-    public String deleteBookingById(@PathVariable int id, ModelMap model) {
-        AmbulanceBooking bookingDelete=ambulanceBookingDAO.getBooking(id);
+    public String deleteBookingById(@PathVariable Integer id, ModelMap model) {
+        AmbulanceBooking bookingDelete = ambulanceBookingDAO.getBooking(id);
         ambulanceBookingDAO.deleteAmbulanceBooking(id);
-        model.addAttribute("message", "Booking " + bookingDelete.getFirstName() + " " +
-                bookingDelete.getLastName() + " has been deleted from the system");
-        model.addAttribute("firstName", bookingDelete.getFirstName());
-        model.addAttribute("lastName", bookingDelete.getLastName());
-        model.addAttribute("bookingNumber", bookingDelete.getBookingNumber());
-        List<AmbulanceBooking> listBookings=ambulanceBookingDAO.listBookings();
+        model.addAttribute("message", "Booking  has been deleted from the system");
+        List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllBookings();
         model.addAttribute("bookings", listBookings);
         return "removeBooking";
-    }*/
-
+    }
 }

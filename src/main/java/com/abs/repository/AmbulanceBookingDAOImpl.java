@@ -44,12 +44,12 @@ public class AmbulanceBookingDAOImpl extends JdbcDaoSupport implements Ambulance
 
     @Override
     @Transactional
-    public int createAmbulanceBookingGetId(int patientId, int createdBy, int destination, int origin,
+    public Integer createAmbulanceBookingGetId(Integer patientId, Integer createdBy, Integer destination, Integer origin,
                                            boolean cardiac, boolean urgent, String dateOfTransfer) {
 
         String SQL = "INSERT INTO ambulancebooking (patientId, createdBy, destination, "
                 + "origin, cardiac, urgent, creationDateTime, transferDateTime, archived) "
-                + "VALUES(?, ?, ?, ?, ?, ?, GETDATE(),?,false)";
+                + "VALUES(?, ?, ?, ?, ?, ?, NOW(),?,'n')";
 
         Object[] params=new Object[]{ patientId, createdBy, destination,origin,cardiac,urgent,dateOfTransfer};
         PreparedStatementCreatorFactory psc=new PreparedStatementCreatorFactory(SQL);
@@ -59,28 +59,28 @@ public class AmbulanceBookingDAOImpl extends JdbcDaoSupport implements Ambulance
         psc.addParameter(new SqlParameter("origin", Types.INTEGER));
         psc.addParameter(new SqlParameter("cardiac", Types.BOOLEAN));
         psc.addParameter(new SqlParameter("urgent", Types.BOOLEAN));
-        psc.addParameter(new SqlParameter("dateOfTransfer", Types.DATE));
+        psc.addParameter(new SqlParameter("dateOfTransfer", Types.VARCHAR));
 
         KeyHolder holder = new GeneratedKeyHolder();
         getJdbcTemplate().update(psc.newPreparedStatementCreator(params), holder);
 
         String key=holder.getKey().toString();
-        System.out.println("Created ambulance booking with id: " + key );
+        System.out.println("Created ambulance booking with id: " + key + " to destination: "+ destination);
         return Integer.parseInt(key);
     }
 
     @Override
     @Transactional
-    public void deleteAmbulanceBooking(int id) {
-        String SQL = "update ambulancebooking set archived = true where id = ?";
+    public void deleteAmbulanceBooking(Integer id) {
+        String SQL = "update ambulancebooking set archived = 'y' where id = ?";
         getJdbcTemplate().update(SQL, new Object[] {id});
         System.out.println("Archived ambulance booking where id: " + id );
     }
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public AmbulanceBooking getBooking(int id) {
-        String SQL = "select * from ambulancebooking where id = ? and archived = false";
+    public AmbulanceBooking getBooking(Integer id) {
+        String SQL = "select * from ambulancebooking where id = ? and archived = 'n'";
         AmbulanceBooking ab = (AmbulanceBooking) getJdbcTemplate().queryForObject(SQL,
                 new Object[]{id}, new AmbulanceBookingMapper());
         return ab;
@@ -89,20 +89,20 @@ public class AmbulanceBookingDAOImpl extends JdbcDaoSupport implements Ambulance
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public List<AmbulanceBooking> getAllBookings() {
-        String SQL = "select * from ambulancebooking where archived = false";
+        String SQL = "select * from ambulancebooking where archived = 'n'";
         List<AmbulanceBooking> abList = getJdbcTemplate().query(SQL,
                 new AmbulanceBookingMapper());
         return abList;
     }
 
     @Override
-    public void setAmbulanceCompany(int id, int ambulanceCompanyId) {
+    public void setAmbulanceCompany(Integer id, Integer ambulanceCompanyId) {
         String SQL = "update ambulancebooking set ambCompanyId = ? where id = ?";
         getJdbcTemplate().update(SQL, new Object[] {ambulanceCompanyId,id});
     }
 
     @Override
-    public void setApproval(int id, boolean approval) {
+    public void setApproval(Integer id, boolean approval) {
         String SQL = "update ambulancebooking set approval = ? where id = ?";
         getJdbcTemplate().update(SQL, new Object[] {approval,id});
     }
@@ -111,9 +111,9 @@ public class AmbulanceBookingDAOImpl extends JdbcDaoSupport implements Ambulance
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-    public int countRows() {
+    public Integer countRows() {
         String SQL = "select count(id) from ambulancebooking";
-        int rows=getJdbcTemplate().queryForObject(SQL, Integer.class);
+        Integer rows=getJdbcTemplate().queryForObject(SQL, Integer.class);
         return rows;
     }
 }

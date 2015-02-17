@@ -15,13 +15,13 @@ import java.util.List;
 public interface AmbulanceCrewDAO {
     public void setDataSource(DataSource dataSource);
 
-    public int createAmbulanceCrewGetId(int ambCompanyId,int userId);
+    public Integer createAmbulanceCrewGetId(Integer ambCompanyId,Integer userId);
 
-    public void deleteAmbulanceCrew(int id);
+    public void deleteAmbulanceCrew(Integer id);
 
-    public AmbulanceCrew getCrew(int id);
+    public AmbulanceCrew getCrew(Integer id);
 
     public List<AmbulanceCrew> getAllCrews();
 
-    public int countRows();
+    public Integer countRows();
 }
