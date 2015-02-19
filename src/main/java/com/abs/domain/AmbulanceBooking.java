@@ -26,6 +26,7 @@ public class AmbulanceBooking {
     private boolean cardiac;
     private boolean urgent;
     private boolean approved;
+    private Integer approvedBy;
     private double cost;
     private String dateCreated;
     private String dateOfTransfer;
@@ -33,7 +34,7 @@ public class AmbulanceBooking {
 
     public AmbulanceBooking(Integer bookingId, Integer patientId,Integer ambCompanyId, Integer createdBy,
                             Integer destination, Integer origin, boolean cardiac,
-                            boolean urgent, boolean approved, double cost, String dateCreated, String dateOfTransfer) {
+                            boolean urgent, boolean approved, Integer approvedBy, double cost, String dateCreated, String dateOfTransfer) {
         this.bookingId = bookingId;
         this.patientId = patientId;
         this.ambCompanyId = ambCompanyId;
@@ -43,6 +44,7 @@ public class AmbulanceBooking {
         this.cardiac = cardiac;
         this.urgent = urgent;
         this.approved = approved;
+        this.approvedBy = approvedBy;
         this.cost = cost;
         this.dateCreated = dateCreated;
         this.dateOfTransfer = dateOfTransfer;
@@ -177,4 +179,13 @@ public class AmbulanceBooking {
     public void setDateOfTransfer(String dateOfTransfer) {
         this.dateOfTransfer = dateOfTransfer;
     }
+
+    public Integer getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(Integer approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
 }

@@ -4,13 +4,11 @@ package com.abs.controller;
  * Created by Declan on 09/02/2015.
  */
 
-        import java.util.ArrayList;
         import java.util.HashMap;
         import java.util.List;
         import java.util.Map;
 
         import javax.servlet.ServletContext;
-        import javax.validation.Valid;
 
         import com.abs.domain.AmbulanceBooking;
         import com.abs.domain.Location;
@@ -18,14 +16,12 @@ package com.abs.controller;
         import com.abs.service.AmbulanceBookingDAO;
         import com.abs.service.LocationDAO;
         import com.abs.service.PatientDAO;
+        import com.google.gson.Gson;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.stereotype.Controller;
         import org.springframework.ui.ModelMap;
         import org.springframework.validation.BindingResult;
-        import org.springframework.web.bind.annotation.ModelAttribute;
-        import org.springframework.web.bind.annotation.PathVariable;
-        import org.springframework.web.bind.annotation.RequestMapping;
-        import org.springframework.web.bind.annotation.RequestMethod;
+        import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/ambbooking")
@@ -84,13 +80,16 @@ public class BookingController {
         return "addNewBooking";
     }
 
-
     @RequestMapping(value = "/addNewBooking", method = RequestMethod.POST)
     public String addBooking(@ModelAttribute("ambulancebooking")  AmbulanceBooking ambulancebooking,
                                       BindingResult result, ModelMap model) {
 
         if(result.hasErrors())
+        {
+            System.out.println("ERROR1");
             return "error";
+        }
+
         Integer id;
 
         try {
@@ -101,12 +100,77 @@ public class BookingController {
             model.addAttribute("id", id);
 
         } catch (Exception e) {
+            System.out.println("ERROR2");
             model.addAttribute("message", "Creation of booking failed, "+e.getLocalizedMessage());
             return "error";
 
         }
-        model.addAttribute(ambulancebooking);
+        List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllBookings();
+        model.addAttribute("bookings", listBookings);
+
+        Map<Integer,String> listPatients = new HashMap<Integer,String>();
+
+        for(AmbulanceBooking b : listBookings)
+        {
+            Patient p = patientDAO.getPatient(b.getPatientId());
+            String patientName = p.getFirstName() + " " + p.getLastName();
+            listPatients.put(b.getBookingId(),patientName );
+        }
+
+        model.addAttribute("patients", listPatients);
+        List<Location> listLoc = locationDAO.getAllLocations();
+        model.addAttribute("locations", listLoc);
+
         return "displayBookings";
+    }
+
+    @RequestMapping(value={"/bookingPermission"}, method = RequestMethod.GET)
+    public String bookingPermission(ModelMap model) {
+
+        List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllUnapprovedBookings();
+        model.addAttribute("bookings", listBookings);
+
+        Map<Integer,String> listPatients = new HashMap<Integer,String>();
+
+        for(AmbulanceBooking b : listBookings)
+        {
+            Patient p = patientDAO.getPatient(b.getPatientId());
+            String patientName = p.getFirstName() + " " + p.getLastName();
+            listPatients.put(b.getBookingId(),patientName );
+        }
+
+        model.addAttribute("patients", listPatients);
+        List<Location> listLoc = locationDAO.getAllLocations();
+        model.addAttribute("locations", listLoc);
+        model.addAttribute("numberOfBookings", listBookings.size());
+        return "bookingPermission";
+    }
+
+    @RequestMapping(value={"/acceptBooking"}, method = RequestMethod.POST   )
+    public @ResponseBody String acceptBooking(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
+        Integer bid = Integer.parseInt(bookingId);
+        ambulanceBookingDAO.setApproval(bid,true,1);
+        return "success";
+    }
+
+    @RequestMapping(value={"/denyBooking"}, method = RequestMethod.POST   )
+    public @ResponseBody String denyBooking(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
+        Integer bid = Integer.parseInt(bookingId);
+        ambulanceBookingDAO.setApproval(bid,false,1);
+        return "success";
+    }
+
+    @RequestMapping(value={"/getNewUnapprovedBookings"}, method = RequestMethod.GET   )
+    public @ResponseBody String getNewUnapprovedBookings(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
+
+        List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllUnapprovedBookings();
+        if(listBookings.size() > 0)
+        {
+            Gson gson = new Gson();
+            String json = gson.toJson(listBookings);
+            return json;
+        }
+            return "none";
     }
 
     @RequestMapping(value="/modifyBooking", method = RequestMethod.GET)

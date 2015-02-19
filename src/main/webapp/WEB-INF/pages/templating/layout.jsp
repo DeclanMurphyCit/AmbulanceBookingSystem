@@ -6,6 +6,7 @@
   <title>Ambulance Booking System
     <tiles:insertAttribute name="title" ignore="true"></tiles:insertAttribute>
   </title>
+    <link rel="icon" type="image/ico" href="/resources/images/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="<c:url value="/resources/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
   <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">

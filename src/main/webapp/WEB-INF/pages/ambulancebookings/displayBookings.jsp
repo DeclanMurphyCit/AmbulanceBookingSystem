@@ -14,7 +14,8 @@
 
 <style>
     #bookingsTable tbody tr {
-        min-height: 15px; /* or whatever height you need to make them all consistent */
+        max-height: 15px; /* or whatever height you need to make them all consistent */
+        font-size: small;
     }
 
     #bookingsTable {
@@ -32,7 +33,6 @@
 </style>
 
 <div id="main-panel" align="center" style="width:850px;">
-    <h2><c:set var="longKey" value="${param.selectedIndex + 0}"/></h2>
     <c:if test="${not empty bookings}">
         <table data-role="table" class="ui-responsive" data-mode="columntoggle" id="bookingsTable">
             <thead>
@@ -44,7 +44,6 @@
                 <th>Cardiac</th>
                 <th>Urgent</th>
                 <th>Transfer Date</th>
-                <th>Created On</th>
             </tr>
             </thead>
 
@@ -79,7 +78,6 @@
                         </c:otherwise>
                     </c:choose>
                     <td>${ab.dateOfTransfer}</td>
-                    <td>${ab.dateCreated}</td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -92,6 +90,7 @@
 <script src="<%= request.getContextPath() %>/resources/bootstrap/js/bootstrap.min.js"></script>
 <script src="<%= request.getContextPath() %>/resources/datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="<%= request.getContextPath() %>/resources/datatables/media/js/dataTables.bootstrap.js"></script>
+<script src="<%= request.getContextPath() %>/resources/datatables/media/js/jquery.datatables.datesort.js"></script>
 
 <script type="text/javascript">
     jQuery(document).ready( function () {
@@ -104,18 +103,17 @@
                 "bFilter": false,
                 "bProcessing": true,
                 "bDeferRender": false,
-                "aaSortingFixed": [[ 0, 'desc' ]],//Fixed Sort on Col 0
+            //    "aaSortingFixed": [[ 0, 'desc' ]],
                 "aoColumnDefs": [
-            {"bVisible": false, "aTargets": [ 0 ]},//Hide col 0
-            {"bSortable": false, "aTargets": [ 2,7,8,9 ]},//Turn of sorting on cols 5,6
+           // {"bSortable": false, "aTargets": [ 2,7,8,9 ]},//Turn of sorting on cols 5,6
             { "sType": "datetime-eu", "aTargets": [ 3 ] }//Set Column as Datetime-eu for sorting
         ],
-                "aaSorting": [[ 3, "desc" ]],                                                //Referral Date
-                "fnDrawCallback": function ( oSettings ) {//Group by column 0
+                "aaSorting": [[ 5,6, "desc" ]]/*,
+                "fnDrawCallback": function ( oSettings ) {
             if ( oSettings.aiDisplay.length == 0 ) {
                 return;
             }
-            var nTrs = $('#datatable tbody tr');
+            var nTrs = $('#table tbody tr');
             var iColspan = nTrs[0].getElementsByTagName('td').length;
             var sLastGroup = "";
             for ( var i=0 ; i<nTrs.length ; i++ ) {
@@ -132,7 +130,7 @@
                     sLastGroup = sGroup;
                 }
             }
-        }
+        }*/
     });
     } );
 </script>

@@ -24,13 +24,13 @@ public class AmbulanceBookingMapper  implements RowMapper {
         boolean cardiac = rs.getBoolean("cardiac");
         boolean urgent = rs.getBoolean("urgent");
         boolean approved = rs.getBoolean("approved");
+        Integer approvedBy = rs.getInt("approvedBy");
         double cost = rs.getDouble("cost");
         String dateCreated = rs.getString("creationDateTime");
-        dateCreated = dateCreated.substring(0, dateCreated.length()-3);
         String dateOfTransfer = rs.getString("transferDateTime");
 
         AmbulanceBooking a = new AmbulanceBooking(id, patientId,ambCompanyId, createdBy,
-        destination, origin, cardiac,urgent, approved, cost, dateCreated, dateOfTransfer);
+        destination, origin, cardiac,urgent, approved,approvedBy, cost, dateCreated, dateOfTransfer);
 
         return a;
     }
