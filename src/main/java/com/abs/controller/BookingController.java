@@ -17,6 +17,7 @@ package com.abs.controller;
         import com.abs.service.LocationDAO;
         import com.abs.service.PatientDAO;
         import com.google.gson.Gson;
+        import org.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.stereotype.Controller;
         import org.springframework.ui.ModelMap;
@@ -130,19 +131,25 @@ public class BookingController {
         List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllUnapprovedBookings();
         model.addAttribute("bookings", listBookings);
 
+        String bookingIdArray = " ";
+
         Map<Integer,String> listPatients = new HashMap<Integer,String>();
 
         for(AmbulanceBooking b : listBookings)
         {
+            bookingIdArray += b.getBookingId() + ", ";
             Patient p = patientDAO.getPatient(b.getPatientId());
             String patientName = p.getFirstName() + " " + p.getLastName();
             listPatients.put(b.getBookingId(),patientName );
         }
 
+        bookingIdArray = bookingIdArray.substring(0, bookingIdArray.length()-1);
+        model.addAttribute("bookingIdArray",bookingIdArray);
         model.addAttribute("patients", listPatients);
         List<Location> listLoc = locationDAO.getAllLocations();
         model.addAttribute("locations", listLoc);
         model.addAttribute("numberOfBookings", listBookings.size());
+
         return "bookingPermission";
     }
 
@@ -168,6 +175,7 @@ public class BookingController {
         {
             Gson gson = new Gson();
             String json = gson.toJson(listBookings);
+            System.out.println(json);
             return json;
         }
             return "none";

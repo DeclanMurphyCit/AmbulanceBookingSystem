@@ -98,6 +98,8 @@
 <script src="<%= request.getContextPath() %>/resources/bootstrap/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
+    var bookingIdArray = [ ${bookingIdArray}];
+
     var numBookings = ${numberOfBookings};
     if(numBookings ==0) jQuery("#numBookings").removeClass("label-warning").addClass("label-primary");
     function setBookingApproval(bookingId,approval) {
@@ -127,21 +129,30 @@
     }
 
     jQuery(document).ready(function () {
-    setInterval(function() {
+        setInterval(function() {
             jQuery.ajax({
                 type: "GET",
+                dataType: 'json',
                 url: '<%=request.getContextPath()%>/ambbooking/getNewUnapprovedBookings',
                 //data: ({}),
                 success: function (data) {
                     if (data != "none") {
-                        //alert(data);
+                        jQuery.each(data, function(index, element) {
+                            if(arrayContains(element.bookingId)== false)
+                                location.reload();
+                        });
                     }
                 },
                 error: function (e) {
-                    //alert('Error: ' + e);
+                    alert('Error: ' + e);
                 }
             });
         }, 5000);
     });
+
+    function arrayContains(id)
+    {
+        return (bookingIdArray.indexOf(id) > -1);
+    }
 
 </script>
