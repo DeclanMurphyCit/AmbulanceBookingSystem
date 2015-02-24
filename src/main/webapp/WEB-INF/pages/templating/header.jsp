@@ -29,6 +29,12 @@
                 <li><a href="<%= request.getContextPath() %>/ambbooking/bookingPermission">Booking Permission</a></li>
               </ul>
             </li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ambulance Company<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                      <li><a href="<%= request.getContextPath() %>/ambcompany/bookingStandby">Booking Standby</a></li>
+                  </ul>
+              </li>
             <li>
                 <c:url var="url" value="/j_spring_security_logout"></c:url>
               <security:authorize access="isFullyAuthenticated()">

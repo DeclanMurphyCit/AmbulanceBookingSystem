@@ -175,7 +175,6 @@ public class BookingController {
         {
             Gson gson = new Gson();
             String json = gson.toJson(listBookings);
-            System.out.println(json);
             return json;
         }
             return "none";

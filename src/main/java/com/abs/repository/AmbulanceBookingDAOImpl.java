@@ -119,6 +119,15 @@ public class AmbulanceBookingDAOImpl extends JdbcDaoSupport implements Ambulance
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public List<AmbulanceBooking> getNewBookingsForAmbCompany(Integer ambCompId) {
+        String SQL = "select * from ambulancebooking where archived = 'n' AND approvedBy != -1 AND approved = true AND ambCompanyId = ?";
+        List<AmbulanceBooking> abList = getJdbcTemplate().query(SQL,new Object[]{ambCompId},
+                new AmbulanceBookingMapper());
+        return abList;
+    }
+
+    @Override
     public void setApproval(Integer id, boolean approved,Integer approvedBy) {
         String SQL = "update ambulancebooking set approved = ?, approvedBy = ? where id = ?";
         getJdbcTemplate().update(SQL, new Object[] {approved,approvedBy,id});

@@ -26,6 +26,7 @@
     th {
         width: 1px;
         border-bottom: 1px solid #d6d6d6;
+        text-align: center;
     }
     tr{
         text-align: center;
@@ -39,8 +40,8 @@
             <tr>
 
                 <th>Patient</th>
-                <th>Destination</th>
                 <th>Origin</th>
+                <th>Destination</th>
                 <th>Cardiac</th>
                 <th>Urgent</th>
                 <th>Transfer Date</th>
@@ -52,15 +53,16 @@
                 <tr>
                     <td><c:out value="${patients[ab.bookingId]}"/></td>
                     <c:forEach var="location" items="${locations}">
-                        <c:if test="${ab.destination == location.id}">
-                            <td>${ location.name}</td>
-                        </c:if>
-                    </c:forEach>
-                    <c:forEach var="location" items="${locations}">
                         <c:if test="${ab.origin == location.id}">
                             <td>${ location.name}</td>
                         </c:if>
                     </c:forEach>
+                    <c:forEach var="location" items="${locations}">
+                        <c:if test="${ab.destination == location.id}">
+                            <td>${ location.name}</td>
+                        </c:if>
+                    </c:forEach>
+
                     <c:choose>
                         <c:when test="${ab.cardiac == true}">
                             <td>Yes</td>
@@ -108,29 +110,7 @@
            // {"bSortable": false, "aTargets": [ 2,7,8,9 ]},//Turn of sorting on cols 5,6
             { "sType": "datetime-eu", "aTargets": [ 3 ] }//Set Column as Datetime-eu for sorting
         ],
-                "aaSorting": [[ 5,6, "desc" ]]/*,
-                "fnDrawCallback": function ( oSettings ) {
-            if ( oSettings.aiDisplay.length == 0 ) {
-                return;
-            }
-            var nTrs = $('#table tbody tr');
-            var iColspan = nTrs[0].getElementsByTagName('td').length;
-            var sLastGroup = "";
-            for ( var i=0 ; i<nTrs.length ; i++ ) {
-                var iDisplayIndex = oSettings._iDisplayStart + i;
-                var sGroup = oSettings.aoData[ oSettings.aiDisplay[iDisplayIndex] ]._aData[0];
-                if ( sGroup != sLastGroup ) {
-                    var nGroup = document.createElement( 'tr' );
-                    var nCell = document.createElement( 'td' );
-                    nCell.colSpan = iColspan;
-                    nCell.className = "group";
-                    nCell.innerHTML = sGroup;
-                    nGroup.appendChild( nCell );
-                    nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
-                    sLastGroup = sGroup;
-                }
-            }
-        }*/
+                "aaSorting": [[ 5,6, "desc" ]]
     });
     } );
 </script>

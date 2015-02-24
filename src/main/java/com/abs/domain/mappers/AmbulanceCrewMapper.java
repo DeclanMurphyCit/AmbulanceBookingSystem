@@ -14,7 +14,7 @@ public class AmbulanceCrewMapper   implements RowMapper {
     @Override
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         Integer id = rs.getInt("id");
-        Integer ambCompanyId = rs.getInt("ambCompanyId");
+        Integer ambCompanyId = rs.getInt("ambulanceCompanyId");
         boolean active = rs.getBoolean("active");
         AmbulanceCrew ac = new AmbulanceCrew(id,ambCompanyId,active);
         return ac;

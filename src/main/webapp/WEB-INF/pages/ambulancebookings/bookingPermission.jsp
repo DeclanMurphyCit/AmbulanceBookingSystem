@@ -134,7 +134,6 @@
                 type: "GET",
                 dataType: 'json',
                 url: '<%=request.getContextPath()%>/ambbooking/getNewUnapprovedBookings',
-                //data: ({}),
                 success: function (data) {
                     if (data != "none") {
                         jQuery.each(data, function(index, element) {
@@ -144,7 +143,7 @@
                     }
                 },
                 error: function (e) {
-                    alert('Error: ' + e);
+                    //alert('Error: ' + e);
                 }
             });
         }, 5000);

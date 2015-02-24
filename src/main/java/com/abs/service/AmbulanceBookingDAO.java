@@ -27,6 +27,8 @@ public interface AmbulanceBookingDAO {
 
     public List<AmbulanceBooking> getAllUnapprovedBookings();
 
+    public List<AmbulanceBooking> getNewBookingsForAmbCompany(Integer ambCompanyId);
+
     public void setApproval(Integer id, boolean approval,Integer approvedBy);
 
     public Integer countRows();
