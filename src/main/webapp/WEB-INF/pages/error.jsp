@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ include file="/WEB-INF/pages/templating/include.jsp"%>
-<div id="main-panel" style="width: 200px;" align="center">
+<div id="main-panel" style="width: 500px;" align="center">
     <h5>${message}</h5>
 </div>
 

@@ -8,11 +8,15 @@ import com.abs.service.AmbulanceBookingDAO;
 import com.abs.service.AmbulanceCrewDAO;
 import com.abs.service.LocationDAO;
 import com.abs.service.PatientDAO;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletContext;
 import java.util.HashMap;
@@ -64,6 +68,28 @@ public class AmbCompanyController {
         model.addAttribute("locations", listLoc);
         model.addAttribute("numberOfBookings", listBookings.size());
 
-        return "bookingPermission";
+        return "bookingStandby";
     }
+
+    @RequestMapping(value={"/cancelBooking"}, method = RequestMethod.POST   )
+    public @ResponseBody String denyBooking(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
+        Integer bid = Integer.parseInt(bookingId);
+        ambulanceBookingDAO.setAmbulanceCompany(bid, -1);
+        //TODO Insert call to get a different amb company
+        return "success";
+    }
+
+    @RequestMapping(value={"/getNewBookings"}, method = RequestMethod.GET   )
+    public @ResponseBody String getNewUnapprovedBookings(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
+
+        List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getNewBookingsForAmbCompany(1);//TODO Replace with id
+        if(listBookings.size() > 0)
+        {
+            Gson gson = new Gson();
+            String json = gson.toJson(listBookings);
+            return json;
+        }
+        return "none";
+    }
+
 }

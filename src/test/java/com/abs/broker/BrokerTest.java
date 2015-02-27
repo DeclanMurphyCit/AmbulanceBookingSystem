@@ -15,7 +15,7 @@ public class BrokerTest {
 
     public static void main(String[] args) {
 
-        for(Integer i = 0; i < 10; i++) {
+        for(Integer i = 0; i < 1; i++) {
             // Build the Solver
             SolverFactory solverFactory = SolverFactory.createFromXmlResource("com/solver/brokerSolverConfig.xml");
             Solver solver = solverFactory.buildSolver();

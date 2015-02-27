@@ -13,12 +13,15 @@ package com.abs.controller;
         import com.abs.domain.AmbulanceBooking;
         import com.abs.domain.Location;
         import com.abs.domain.Patient;
+        import com.abs.domain.UserObj;
         import com.abs.service.AmbulanceBookingDAO;
         import com.abs.service.LocationDAO;
         import com.abs.service.PatientDAO;
+        import com.abs.service.UserObjDAO;
         import com.google.gson.Gson;
-        import org.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding;
         import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.security.core.Authentication;
+        import org.springframework.security.core.context.SecurityContextHolder;
         import org.springframework.stereotype.Controller;
         import org.springframework.ui.ModelMap;
         import org.springframework.validation.BindingResult;
@@ -33,6 +36,8 @@ public class BookingController {
     @Autowired
     PatientDAO patientDAO;
     @Autowired
+    UserObjDAO userObjDAO;
+    @Autowired
     LocationDAO locationDAO;
     @Autowired
     private ServletContext servletContext;
@@ -44,15 +49,29 @@ public class BookingController {
         model.addAttribute("bookings", listBookings);
 
         Map<Integer,String> listPatients = new HashMap<Integer,String>();
+        Map<Integer,String> listUsers = new HashMap<Integer,String>();
 
         for(AmbulanceBooking b : listBookings)
         {
             Patient p = patientDAO.getPatient(b.getPatientId());
             String patientName = p.getFirstName() + " " + p.getLastName();
             listPatients.put(b.getBookingId(),patientName );
+
+            UserObj u = userObjDAO.getUser(b.getCreatedBy());
+            String usersName = u.getFirstName() + " " + u.getLastName();
+            listUsers.put(u.getId(),usersName);
+
+            if(!b.getApprovedBy().equals(null) && !b.getApprovedBy().equals(-1) )
+            {
+                u = userObjDAO.getUser(b.getApprovedBy());
+                usersName = u.getFirstName() + " " + u.getLastName();
+                listUsers.put(u.getId(),usersName);
+            }
+
         }
 
         model.addAttribute("patients", listPatients);
+        model.addAttribute("users", listUsers);
         List<Location> listLoc = locationDAO.getAllLocations();
         model.addAttribute("locations", listLoc);
         return "displayBookings";
@@ -94,15 +113,25 @@ public class BookingController {
         Integer id;
 
         try {
-            id= ambulanceBookingDAO.createAmbulanceBookingGetId(ambulancebooking.getPatientId(), ambulancebooking.getCreatedBy(),
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if(auth.getName().equals("anonymousUser"))
+            {
+                model.addAttribute("error","You must be logged in to make a booking request!");
+                return "login";
+            }
+            String name = auth.getName();
+            UserObj userObj = userObjDAO.getUserByUsername(name);
+
+            id= ambulanceBookingDAO.createAmbulanceBookingGetId(ambulancebooking.getPatientId(), userObj.getId(),
                     ambulancebooking.getDestination(), ambulancebooking.getOrigin(), ambulancebooking.isCardiac(), ambulancebooking.isUrgent(),
                     ambulancebooking.getDateOfTransfer());
 
             model.addAttribute("id", id);
 
         } catch (Exception e) {
-            System.out.println("ERROR2");
-            model.addAttribute("message", "Creation of booking failed, "+e.getLocalizedMessage());
+            System.out.println("ERROR2 ");
+            e.printStackTrace();
+                    model.addAttribute("message", "Creation of booking failed, " + e.getLocalizedMessage());
             return "error";
 
         }
@@ -110,15 +139,28 @@ public class BookingController {
         model.addAttribute("bookings", listBookings);
 
         Map<Integer,String> listPatients = new HashMap<Integer,String>();
+        Map<Integer,String> listUsers = new HashMap<Integer,String>();
 
         for(AmbulanceBooking b : listBookings)
         {
             Patient p = patientDAO.getPatient(b.getPatientId());
             String patientName = p.getFirstName() + " " + p.getLastName();
             listPatients.put(b.getBookingId(),patientName );
+
+            UserObj u = userObjDAO.getUser(b.getCreatedBy());
+            String usersName = u.getFirstName() + " " + u.getLastName();
+            listUsers.put(u.getId(),usersName);
+
+            if(!b.getApprovedBy().equals(null) && !b.getApprovedBy().equals(-1) )
+            {
+                u = userObjDAO.getUser(b.getApprovedBy());
+                usersName = u.getFirstName() + " " + u.getLastName();
+                listUsers.put(u.getId(),usersName);
+            }
         }
 
         model.addAttribute("patients", listPatients);
+        model.addAttribute("users", listUsers);
         List<Location> listLoc = locationDAO.getAllLocations();
         model.addAttribute("locations", listLoc);
 
@@ -134,6 +176,7 @@ public class BookingController {
         String bookingIdArray = " ";
 
         Map<Integer,String> listPatients = new HashMap<Integer,String>();
+        Map<Integer,String> listUsers = new HashMap<Integer,String>();
 
         for(AmbulanceBooking b : listBookings)
         {
@@ -141,11 +184,16 @@ public class BookingController {
             Patient p = patientDAO.getPatient(b.getPatientId());
             String patientName = p.getFirstName() + " " + p.getLastName();
             listPatients.put(b.getBookingId(),patientName );
+
+            UserObj u = userObjDAO.getUser(b.getCreatedBy());
+            String usersName = u.getFirstName() + " " + u.getLastName();
+            listUsers.put(b.getBookingId(),usersName);
         }
 
         bookingIdArray = bookingIdArray.substring(0, bookingIdArray.length()-1);
         model.addAttribute("bookingIdArray",bookingIdArray);
         model.addAttribute("patients", listPatients);
+        model.addAttribute("users", listUsers);
         List<Location> listLoc = locationDAO.getAllLocations();
         model.addAttribute("locations", listLoc);
         model.addAttribute("numberOfBookings", listBookings.size());
@@ -155,15 +203,31 @@ public class BookingController {
 
     @RequestMapping(value={"/acceptBooking"}, method = RequestMethod.POST   )
     public @ResponseBody String acceptBooking(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        if(auth.getName().equals("anonymousUser"))
+        {
+            return "notLoggedIn";
+        }
+        UserObj userObj = userObjDAO.getUserByUsername(name);
+
         Integer bid = Integer.parseInt(bookingId);
-        ambulanceBookingDAO.setApproval(bid,true,1);
+        ambulanceBookingDAO.setApproval(bid,true,userObj.getId());
         return "success";
     }
 
     @RequestMapping(value={"/denyBooking"}, method = RequestMethod.POST   )
     public @ResponseBody String denyBooking(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        if(auth.getName().equals("anonymousUser"))
+        {
+            return "notLoggedIn";
+        }
+        UserObj userObj = userObjDAO.getUserByUsername(name);
         Integer bid = Integer.parseInt(bookingId);
-        ambulanceBookingDAO.setApproval(bid,false,1);
+        ambulanceBookingDAO.setApproval(bid,false,userObj.getId());
         return "success";
     }
 

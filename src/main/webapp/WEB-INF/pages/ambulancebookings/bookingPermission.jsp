@@ -81,6 +81,9 @@
             <div class="col-md-2" align="right">Date Created:</div>
             <div class="col-md-9" align="left"> ${ab.dateCreated} </div>
 
+            <div class="col-md-2" align="right">Created By:</div>
+            <div class="col-md-9" align="left"> ${users[ab.bookingId]} </div>
+
             <div class="col-md-7" style="margin-top: 15px">
                 <button class="btn btn-success" style="width: 75px;" id="accept-${ab.bookingId}" onclick="setBookingApproval(${ab.bookingId},'accept')">Accept</button>
             </div>
@@ -99,9 +102,8 @@
 
 <script type="text/javascript">
     var bookingIdArray = [ ${bookingIdArray}];
-
     var numBookings = ${numberOfBookings};
-    if(numBookings ==0) jQuery("#numBookings").removeClass("label-warning").addClass("label-primary");
+
     function setBookingApproval(bookingId,approval) {
         jQuery.ajax({
             type: "POST",
@@ -110,7 +112,7 @@
             success: function(data) {
                 if(data == "success")
                 {
-                    jQuery('#booking-'+bookingId).fadeOut(300, function() { jQuery(this).remove(); });
+                    jQuery('#booking-'+bookingId).slideUp(300, function() { jQuery(this).remove(); });
                     numBookings--;
                     if(numBookings ==0)
                     {
@@ -120,6 +122,9 @@
                     else
                         jQuery("#numBookings").text("Number of pending bookings: " +numBookings);
 
+                } else if ( data == "notLoggedIn")
+                {
+                    alert("Please login before approving a booking");
                 }
             },
             error: function(e){
@@ -129,6 +134,14 @@
     }
 
     jQuery(document).ready(function () {
+
+        if(numBookings ==0)
+        {
+            jQuery("#numBookings").removeClass("label-warning").addClass("label-primary");
+            jQuery("#numBookings").html("No bookings currently require approval");
+        }
+
+
         setInterval(function() {
             jQuery.ajax({
                 type: "GET",
@@ -147,6 +160,9 @@
                 }
             });
         }, 5000);
+
+
+
     });
 
     function arrayContains(id)

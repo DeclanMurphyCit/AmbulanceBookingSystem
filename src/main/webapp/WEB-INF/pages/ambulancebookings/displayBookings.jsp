@@ -33,8 +33,7 @@
     }
 </style>
 
-<div id="main-panel" align="center" style="width:850px;">
-    <c:if test="${not empty bookings}">
+<div id="main-panel" align="center" style="width:1050px;">
         <table data-role="table" class="ui-responsive" data-mode="columntoggle" id="bookingsTable">
             <thead>
             <tr>
@@ -42,9 +41,12 @@
                 <th>Patient</th>
                 <th>Origin</th>
                 <th>Destination</th>
-                <th>Cardiac</th>
                 <th>Urgent</th>
+                <th>Cardiac</th>
+                <th>Approved</th>
+                <th>Approved By</th>
                 <th>Transfer Date</th>
+                <th>Created By</th>
             </tr>
             </thead>
 
@@ -62,7 +64,14 @@
                             <td>${ location.name}</td>
                         </c:if>
                     </c:forEach>
-
+                    <c:choose>
+                        <c:when test="${ab.urgent == true}">
+                            <td>Yes</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td>No</td>
+                        </c:otherwise>
+                    </c:choose>
                     <c:choose>
                         <c:when test="${ab.cardiac == true}">
                             <td>Yes</td>
@@ -72,20 +81,28 @@
                         </c:otherwise>
                     </c:choose>
                     <c:choose>
-                        <c:when test="${ab.urgent == true}">
+                        <c:when test="${ab.approved == true}">
                             <td>Yes</td>
                         </c:when>
                         <c:otherwise>
                             <td>No</td>
                         </c:otherwise>
                     </c:choose>
+                    <c:choose>
+                        <c:when test="${ab.approvedBy == -1}">
+                            <td>-</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td><c:out value="${users[ab.approvedBy]}"/></td>
+                        </c:otherwise>
+                    </c:choose>
                     <td>${ab.dateOfTransfer}</td>
+                    <td><c:out value="${users[ab.createdBy]}"/></td>
                 </tr>
             </c:forEach>
             </tbody>
 
         </table>
-    </c:if>
 </div>
 
 <script src="<%= request.getContextPath() %>/resources/jquery-1.11.2.min.js"></script>

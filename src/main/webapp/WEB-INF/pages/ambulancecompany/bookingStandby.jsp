@@ -15,6 +15,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/pages/templating/include.jsp"%>
 
+<link href="<c:url value="/resources/jqueryui/jquery-ui.min.css" />" rel="stylesheet">
+
 <style>
     .col-md-9{
         width: 65%;
@@ -31,7 +33,7 @@
 <div id="main-panel" align="center" style="width:450px;">
     <h2>${message}</h2>
 
-    <h3><span id="numBookings" class="label label-warning">Number of pending bookings: ${numberOfBookings}</span></h3>
+    <h3><span id="numBookings" class="label label-warning">Number of active bookings: ${numberOfBookings}</span></h3>
 
     <c:forEach var="ab" items="${bookings}">
 
@@ -88,11 +90,8 @@
             <div class="col-md-2" align="right">Date Created:</div>
             <div class="col-md-9" align="left"> ${ab.dateCreated} </div>
 
-            <div class="col-md-7" style="margin-top: 15px">
-                <button class="btn btn-success" style="width: 75px;" id="accept-${ab.bookingId}" onclick="setBookingApproval(${ab.bookingId},'accept')">Accept</button>
-            </div>
-            <div class="col-md-4" style="margin-top: 15px">
-                <button class="btn btn-danger" style="width: 75px;" id="deny-${ab.bookingId}" onclick="setBookingApproval(${ab.bookingId},'deny')">Deny</button>
+            <div class="col-md-11" style="margin-top: 15px">
+                <button class="btn btn-danger" style="width: 155px;" id="deny-${ab.bookingId}" onclick="cancelBooking(${ab.bookingId})">Cancel Booking</button>
             </div>
             <hr>
         </div>
@@ -100,37 +99,58 @@
 
     </c:forEach>
 </div>
-
+<div id="dialog"></div>
 <script src="<%= request.getContextPath() %>/resources/jquery-1.11.2.min.js"></script>
+<script src="<%= request.getContextPath() %>/resources/jqueryui/jquery-ui.min.js"></script>
 <script src="<%= request.getContextPath() %>/resources/bootstrap/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
     var bookingIdArray = [ ${bookingIdArray}];
-
     var numBookings = ${numberOfBookings};
     if(numBookings ==0) jQuery("#numBookings").removeClass("label-warning").addClass("label-primary");
-    function setBookingApproval(bookingId,approval) {
-        jQuery.ajax({
-            type: "POST",
-            url: '<%=request.getContextPath()%>/ambbooking/'+approval+'Booking',
-            data: ({bookingId : bookingId}),
-            success: function(data) {
-                if(data == "success")
-                {
-                    jQuery('#booking-'+bookingId).fadeOut(300, function() { jQuery(this).remove(); });
-                    numBookings--;
-                    if(numBookings ==0)
-                    {
-                        jQuery("#numBookings").removeClass("label-warning").addClass("label-primary");
-                        jQuery("#numBookings").text("No bookings require approval");
-                    }
-                    else
-                        jQuery("#numBookings").text("Number of pending bookings: " +numBookings);
+
+
+    function cancelBooking(bookingId) {
+
+        jQuery("#dialog").html("Are you sure you want to cancel this booking?");
+        // Define the Dialog and its properties.
+        jQuery("#dialog").dialog({
+            resizable: false,
+            modal: true,
+            title: "Alert",
+            height: 175,
+            width: 300,
+            buttons: {
+                "Yes": function () {
+                    jQuery(this).dialog('close');
+                    jQuery.ajax({
+                        type: "POST",
+                        url: '<%=request.getContextPath()%>/ambcompany/cancelBooking',
+                        data: ({bookingId : bookingId}),
+                        success: function(data) {
+                            if(data == "success")
+                            {
+                                jQuery('#booking-'+bookingId).fadeOut(300, function() { jQuery(this).remove(); });
+                                numBookings--;
+                                if(numBookings ==0)
+                                {
+                                    jQuery("#numBookings").removeClass("label-warning").addClass("label-primary")
+                                        .text("No bookings require approval");
+                                }
+                                else
+                                    jQuery("#numBookings").text("Number of active bookings: " +numBookings);
+
+                            }
+                        },
+                        error: function(e){
+                            alert('Error: ' + e);
+                        }
+                    });
+                },
+                "No": function () {
+                    jQuery(this).dialog('close');
 
                 }
-            },
-            error: function(e){
-                alert('Error: ' + e);
             }
         });
     }
@@ -140,7 +160,7 @@
             jQuery.ajax({
                 type: "GET",
                 dataType: 'json',
-                url: '<%=request.getContextPath()%>/ambbooking/getNewUnapprovedBookings',
+                url: '<%=request.getContextPath()%>/ambcompany/getNewBookings',
                 //data: ({}),
                 success: function (data) {
                     if (data != "none") {
