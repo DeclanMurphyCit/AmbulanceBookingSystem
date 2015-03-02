@@ -45,14 +45,16 @@ public class AmbulanceCompanyDAOImpl  extends JdbcDaoSupport implements Ambulanc
 
     @Override
     @Transactional
-    public Integer createAmbulanceCompanyGetId(String name, BigDecimal cost, boolean cardiac,
+    public Integer createAmbulanceCompanyGetId(Integer userId,String name, BigDecimal cost, boolean cardiac,
                                            String timeActive, String timeInactive) {
 
-        String SQL = "INSERT INTO ambulancecompany (name, cost, cardiac, timeActive, timeInactive, archived) "
-                + "VALUES(?, ?, ?, ?, ?, false)";
+        String SQL = "INSERT INTO ambulancecompany (userId, name, cost, cardiac, timeActive, timeInactive, archived) "
+                + "VALUES(?, ?, ?, ?, ?, ?, false)";
 
-        Object[] params=new Object[]{ name, cost, cardiac,timeActive,timeInactive};
+        Object[] params=new Object[]{userId, name, cost, cardiac,timeActive,timeInactive};
         PreparedStatementCreatorFactory psc=new PreparedStatementCreatorFactory(SQL);
+
+        psc.addParameter(new SqlParameter("userId", Types.INTEGER));
         psc.addParameter(new SqlParameter("name", Types.VARCHAR));
         psc.addParameter(new SqlParameter("cost", Types.DOUBLE));
         psc.addParameter(new SqlParameter("cardiac", Types.BOOLEAN));
@@ -81,6 +83,15 @@ public class AmbulanceCompanyDAOImpl  extends JdbcDaoSupport implements Ambulanc
         String SQL = "select * from ambulancecompany where id = ? and archived = 'n'";
         AmbulanceCompany ac = (AmbulanceCompany) getJdbcTemplate().queryForObject(SQL,
                 new Object[]{id}, new AmbulanceCompanyMapper());
+        return ac;
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    public AmbulanceCompany getCompanyUserId(Integer userId) {
+        String SQL = "select * from ambulancecompany where userId = ? and archived = 'n'";
+        AmbulanceCompany ac = (AmbulanceCompany) getJdbcTemplate().queryForObject(SQL,
+                new Object[]{userId}, new AmbulanceCompanyMapper());
         return ac;
     }
 

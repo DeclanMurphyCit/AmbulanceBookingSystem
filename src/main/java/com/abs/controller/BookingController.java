@@ -7,17 +7,12 @@ package com.abs.controller;
         import java.util.HashMap;
         import java.util.List;
         import java.util.Map;
+        import java.util.Random;
 
         import javax.servlet.ServletContext;
 
-        import com.abs.domain.AmbulanceBooking;
-        import com.abs.domain.Location;
-        import com.abs.domain.Patient;
-        import com.abs.domain.UserObj;
-        import com.abs.service.AmbulanceBookingDAO;
-        import com.abs.service.LocationDAO;
-        import com.abs.service.PatientDAO;
-        import com.abs.service.UserObjDAO;
+        import com.abs.domain.*;
+        import com.abs.service.*;
         import com.google.gson.Gson;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.security.core.Authentication;
@@ -37,6 +32,8 @@ public class BookingController {
     PatientDAO patientDAO;
     @Autowired
     UserObjDAO userObjDAO;
+    @Autowired
+    AmbulanceCompanyDAO ambulanceCompanyDAO;
     @Autowired
     LocationDAO locationDAO;
     @Autowired
@@ -214,6 +211,12 @@ public class BookingController {
 
         Integer bid = Integer.parseInt(bookingId);
         ambulanceBookingDAO.setApproval(bid,true,userObj.getId());
+
+        List<AmbulanceCompany> ambComps =  ambulanceCompanyDAO.getAllCompanies();
+
+        int randomId = new Random().nextInt(ambComps.size());//TODO Link to broker system
+
+        ambulanceBookingDAO.setAmbulanceCompany(bid,ambComps.get(randomId).getId());
         return "success";
     }
 

@@ -1,15 +1,11 @@
 package com.abs.controller;
 
-import com.abs.domain.AmbulanceBooking;
-import com.abs.domain.AmbulanceCrew;
-import com.abs.domain.Location;
-import com.abs.domain.Patient;
-import com.abs.service.AmbulanceBookingDAO;
-import com.abs.service.AmbulanceCrewDAO;
-import com.abs.service.LocationDAO;
-import com.abs.service.PatientDAO;
+import com.abs.domain.*;
+import com.abs.service.*;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -36,7 +32,11 @@ public class AmbCompanyController {
     @Autowired
     AmbulanceCrewDAO ambulanceCrewDAO;
     @Autowired
+    AmbulanceCompanyDAO ambulanceCompanyDAO;
+    @Autowired
     PatientDAO patientDAO;
+    @Autowired
+    UserObjDAO userObjDAO;
     @Autowired
     LocationDAO locationDAO;
     @Autowired
@@ -45,7 +45,18 @@ public class AmbCompanyController {
     @RequestMapping(value={"/bookingStandby"}, method = RequestMethod.GET)
     public String bookingPermission(ModelMap model) {
 
-        List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getNewBookingsForAmbCompany(1);//TODO Replace with id
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth.getName().equals("anonymousUser"))
+        {
+            model.addAttribute("error","You must be logged in to view the standby page!");
+            return "login";
+        }
+        String name = auth.getName();
+        UserObj userObj = userObjDAO.getUserByUsername(name);
+
+        AmbulanceCompany ambCompany = ambulanceCompanyDAO.getCompanyUserId(userObj.getId());
+
+        List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getNewBookingsForAmbCompany(ambCompany.getId());
         model.addAttribute("bookings", listBookings);
         List<AmbulanceCrew> listCrews = ambulanceCrewDAO.getAllCrews();
 
@@ -82,7 +93,13 @@ public class AmbCompanyController {
     @RequestMapping(value={"/getNewBookings"}, method = RequestMethod.GET   )
     public @ResponseBody String getNewUnapprovedBookings(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
 
-        List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getNewBookingsForAmbCompany(1);//TODO Replace with id
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        UserObj userObj = userObjDAO.getUserByUsername(name);
+
+        AmbulanceCompany ambCompany = ambulanceCompanyDAO.getCompanyUserId(userObj.getId());
+
+        List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getNewBookingsForAmbCompany(ambCompany.getId());
         if(listBookings.size() > 0)
         {
             Gson gson = new Gson();

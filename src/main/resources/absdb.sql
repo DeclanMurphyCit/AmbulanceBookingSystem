@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2015 at 08:13 PM
+-- Generation Time: Mar 02, 2015 at 07:30 PM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -39,22 +39,12 @@ CREATE TABLE IF NOT EXISTS `ambulancebooking` (
   `cardiac` tinyint(1) DEFAULT NULL,
   `urgent` tinyint(1) DEFAULT NULL,
   `approved` tinyint(1) DEFAULT NULL,
+  `approvedBy` int(11) NOT NULL,
   `cost` double DEFAULT NULL,
   `creationDateTime` varchar(30) DEFAULT NULL,
   `transferDateTime` varchar(30) DEFAULT NULL,
   `archived` varchar(1) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
-
---
--- Dumping data for table `ambulancebooking`
---
-
-INSERT INTO `ambulancebooking` (`id`, `patientId`, `ambCompanyId`, `amcCrewId`, `createdBy`, `destination`, `origin`, `cardiac`, `urgent`, `approved`, `cost`, `creationDateTime`, `transferDateTime`, `archived`) VALUES
-(41, 1, NULL, NULL, NULL, 3, 1, 1, 1, NULL, NULL, '2015-02-13 15:25:52', '09/05/1992', 'n'),
-(42, 2, NULL, NULL, NULL, 2, 1, 1, 0, NULL, NULL, '2015-02-13 15:30:14', '09/05/1992', 'n'),
-(43, 3, NULL, NULL, NULL, 4, 1, 0, 1, NULL, NULL, '2015-02-13 15:34:05', '09/05/1992', 'n'),
-(44, 4, NULL, NULL, NULL, 3, 4, 0, 0, NULL, NULL, '2015-02-13 17:06:47', '09/05/1992', 'n'),
-(45, 1, NULL, NULL, NULL, 1, 3, 0, 1, NULL, NULL, '2015-02-16 17:36:28', '09/05/1992', 'n');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=126 ;
 
 -- --------------------------------------------------------
 
@@ -64,12 +54,22 @@ INSERT INTO `ambulancebooking` (`id`, `patientId`, `ambCompanyId`, `amcCrewId`, 
 
 CREATE TABLE IF NOT EXISTS `ambulancecompany` (
 `id` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
   `cost` double DEFAULT NULL,
   `cardiac` tinyint(1) DEFAULT NULL,
-  `timeStart` varchar(4) DEFAULT NULL,
-  `timeEnd` varchar(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `timeActive` varchar(4) DEFAULT NULL,
+  `timeInactive` varchar(4) DEFAULT NULL,
+  `archived` varchar(1) NOT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `ambulancecompany`
+--
+
+INSERT INTO `ambulancecompany` (`id`, `userId`, `name`, `cost`, `cardiac`, `timeActive`, `timeInactive`, `archived`) VALUES
+(1, 3, 'Cork City Ambulances', 1600, 1, '0800', '2200', 'n'),
+(2, 4, 'St. John Ambulance Cork', 1800, 0, '0000', '0000', 'n');
 
 -- --------------------------------------------------------
 
@@ -80,8 +80,19 @@ CREATE TABLE IF NOT EXISTS `ambulancecompany` (
 CREATE TABLE IF NOT EXISTS `ambulancecrew` (
 `id` int(11) NOT NULL,
   `ambulanceCompanyId` int(11) DEFAULT NULL,
-  `active` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `active` tinyint(1) DEFAULT NULL,
+  `archived` varchar(1) NOT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `ambulancecrew`
+--
+
+INSERT INTO `ambulancecrew` (`id`, `ambulanceCompanyId`, `active`, `archived`) VALUES
+(1, 1, 1, 'n'),
+(2, 1, 1, 'n'),
+(3, 2, 1, 'n'),
+(4, 2, 1, 'n');
 
 -- --------------------------------------------------------
 
@@ -100,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `location` (
 
 INSERT INTO `location` (`id`, `name`) VALUES
 (1, 'Bon Secours Cork'),
-(2, 'Cork University Hospital'),
+(2, 'CUH'),
 (3, 'Mercy Cork'),
 (4, 'South Infirmary');
 
@@ -116,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `patient` (
   `lastName` varchar(45) DEFAULT NULL,
   `wardId` int(11) DEFAULT NULL,
   `archived` varchar(1) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `patient`
@@ -126,7 +137,9 @@ INSERT INTO `patient` (`id`, `firstName`, `lastName`, `wardId`, `archived`) VALU
 (1, 'Declan', 'Murphy', 2, 'n'),
 (2, 'Mick', 'Power', 2, 'n'),
 (3, 'Martin', 'Murtagh', 2, 'n'),
-(4, 'John', 'Smyth', 2, 'n');
+(4, 'John', 'Smyth', 2, 'n'),
+(5, 'Molly', 'Marner', 2, 'n'),
+(6, 'Jeff', 'McLoughlin', 2, 'n');
 
 -- --------------------------------------------------------
 
@@ -141,14 +154,17 @@ CREATE TABLE IF NOT EXISTS `user` (
   `enabled` tinyint(1) DEFAULT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `enabled`, `firstname`, `lastname`) VALUES
-(1, 'admin', 'admin', 1, 'admin', 'admin');
+(1, 'admin', 'admin', 1, 'admin', 'admin'),
+(2, 'declan', 'declan', 1, 'Declan', 'Murphy'),
+(3, 'cca', 'cca', 1, 'Cork City', 'Ambulances'),
+(4, 'stjohn', 'stjohn', 1, 'St. John', 'Ambulances Cork');
 
 -- --------------------------------------------------------
 
@@ -160,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `userrole` (
 `id` int(11) NOT NULL,
   `userId` int(11) DEFAULT NULL,
   `authority` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `userrole`
@@ -168,7 +184,9 @@ CREATE TABLE IF NOT EXISTS `userrole` (
 
 INSERT INTO `userrole` (`id`, `userId`, `authority`) VALUES
 (1, 1, 'ROLE_ADMIN'),
-(2, 1, 'ROLE_NURSE');
+(2, 2, 'ROLE_NURSE'),
+(3, 3, 'ROLE_AMB_COMP'),
+(4, 4, 'ROLE_AMB_COMP');
 
 --
 -- Indexes for dumped tables
@@ -224,17 +242,17 @@ ALTER TABLE `userrole`
 -- AUTO_INCREMENT for table `ambulancebooking`
 --
 ALTER TABLE `ambulancebooking`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=46;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=126;
 --
 -- AUTO_INCREMENT for table `ambulancecompany`
 --
 ALTER TABLE `ambulancecompany`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `ambulancecrew`
 --
 ALTER TABLE `ambulancecrew`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `location`
 --
@@ -244,17 +262,17 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 -- AUTO_INCREMENT for table `patient`
 --
 ALTER TABLE `patient`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `userrole`
 --
 ALTER TABLE `userrole`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

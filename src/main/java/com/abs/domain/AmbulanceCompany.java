@@ -7,6 +7,7 @@ import java.util.Date;
 public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	
 	private Integer id;
+    private Integer userId;
 	private String name;
 	private double cost;
 	private Integer costScore;
@@ -14,27 +15,18 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	private String timeInactive;
 	private boolean cardiac;
 		
-	public AmbulanceCompany(Integer id, String name, double cost, String timeActive,
+	public AmbulanceCompany(Integer id, Integer userId, String name, double cost, String timeActive,
 							String timeInactive, boolean cardiac) {
 		super();
 		this.id = id;
+        this.userId = userId;
 		this.name = name;
 		this.cost = cost;
 		this.timeActive = timeActive;
 		this.timeInactive = timeInactive;
 		this.cardiac = cardiac;
 	}
-	
-	public AmbulanceCompany(String name, double cost, String timeActive,
-							String timeInactive, boolean cardiac) {
-		super();
-		this.name = name;
-		this.cost = cost;
-		this.timeActive = timeActive;
-		this.timeInactive = timeInactive;
-		this.cardiac = cardiac;
-	}
-	
+
 	public AmbulanceCompany(){}
 	
 	public Integer getId() {
@@ -73,8 +65,14 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 	public void setCardiac(boolean cardiac) {
 		this.cardiac = cardiac;
 	}
+    public Integer getUserId() {
+        return userId;
+    }
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-	public Integer getCostScore() {
+    public Integer getCostScore() {
 		System.out.println("CS: "+costScore);
 		return costScore;
 	}
