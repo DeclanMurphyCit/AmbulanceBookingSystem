@@ -104,6 +104,16 @@
         return len > 0? new Array(len).join(chr || '0')+this : this;
     }
 
+    jQuery('#bookingForm').submit(function()
+    {
+        if (jQuery("#origin").val() == jQuery("#destination").val()) {
+            alert("Origin and destinatin must be different locations!")
+            return false;
+        }
+
+        // ... continue work
+    });
+
     jQuery(document).ready(function () {
 
         jQuery.validate();
