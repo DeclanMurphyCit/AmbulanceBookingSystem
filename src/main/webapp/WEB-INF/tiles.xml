@@ -36,16 +36,15 @@
         <put-attribute name="body" value="/WEB-INF/pages/ambulancebookings/displayBookings.jsp"></put-attribute>
     </definition>
 
-    <definition extends="base.definition" name="bookingPermission">
-        <put-attribute name="title" value="Booking Permission"></put-attribute>
-        <put-attribute name="body" value="/WEB-INF/pages/ambulancebookings/bookingPermission.jsp"></put-attribute>
-    </definition>
-
     <definition extends="base.definition" name="bookingStandby">
         <put-attribute name="title" value="Booking Permission"></put-attribute>
         <put-attribute name="body" value="/WEB-INF/pages/ambulancecompany/bookingStandby.jsp"></put-attribute>
     </definition>
 
+    <definition extends="base.definition" name="bookingPermission">
+        <put-attribute name="title" value="Booking Permission"></put-attribute>
+        <put-attribute name="body" value="/WEB-INF/pages/ambulancebookings/bookingPermission.jsp"></put-attribute>
+    </definition>
 
     <definition extends="base.definition" name="error">
         <put-attribute name="title" value="Error"></put-attribute>

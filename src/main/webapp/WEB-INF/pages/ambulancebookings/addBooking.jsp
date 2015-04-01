@@ -8,10 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/pages/templating/include.jsp"%>
 
-<link rel="stylesheet" type="text/css"
-      href="<% request.getContextPath();%>/resources/jqueryui/jquery-ui.min.css">
-<link rel="stylesheet" type="text/css"
-      href="<% request.getContextPath();%>/resources/datetimepicker/jquery.datetimepicker.css">
+<link href="<c:url value="/WebResources/jqueryui/jquery-uimin.css" />" rel="stylesheet">
+<link href="<c:url value="/WebResources/datetimepicker/datepicker.css" />" rel="stylesheet">
 
 <form:form method="post" class="form-horizontal" id="bookingForm" action="addNewBooking" modelAttribute="ambulancebooking">
     <div id="main-panel" align="center" style="width:500px;">
@@ -91,11 +89,11 @@
     </div>
 </form:form>
 
-<script src="<%= request.getContextPath() %>/resources/jquery-1.11.2.min.js"></script>
-<script src="<%= request.getContextPath() %>/resources/jqueryui/jquery-ui.min.js"></script>
-<script src="<%= request.getContextPath() %>/resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="<%= request.getContextPath() %>/resources/datetimepicker/jquery.datetimepicker.js"></script>
-<script src="<%= request.getContextPath() %>/resources/form-validator/jquery.form-validator.min.js"></script>
+<script src="<%= request.getContextPath() %>/WebResources/jquery-1.11.2.min.js"></script>
+<script src="<%= request.getContextPath() %>/WebResources/jqueryui/jquery-ui.min.js"></script>
+<script src="<%= request.getContextPath() %>/WebResources/bootstrap/js/bootstrap.min.js"></script>
+<script src="<%= request.getContextPath() %>/WebResources/datetimepicker/jquery.datetimepicker.js"></script>
+<script src="<%= request.getContextPath() %>/WebResources/form-validator/jquery.form-validator.min.js"></script>
 
 
 <script>

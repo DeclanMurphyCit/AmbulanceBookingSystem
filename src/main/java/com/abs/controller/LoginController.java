@@ -13,7 +13,7 @@ import java.util.Date;
 @Controller
 public class LoginController {
 
-		@RequestMapping(value={"/","/home"})
+		@RequestMapping(value={"/home","AmbulanceBookingSystem/home"})
 		public String showHomePage(ModelMap model) {
 			Date date = new java.util.Date();
 			model.addAttribute("message", "This is the ABS Homepage.");
@@ -22,10 +22,7 @@ public class LoginController {
 
 	}
 
-
-
-
-	@RequestMapping(value="/login", method = RequestMethod.GET)
+	@RequestMapping(value={"/","/login","AmbulanceBookingSystem/login"}, method = RequestMethod.GET)
 	public ModelAndView login(
 			@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout) {

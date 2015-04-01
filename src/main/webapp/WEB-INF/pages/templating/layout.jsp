@@ -4,13 +4,12 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ambulance Booking System
-    <tiles:insertAttribute name="title" ignore="true"></tiles:insertAttribute>
+    <tiles:insertAttribute name="title" ignore="true"/>
   </title>
-    <link rel="icon" type="image/ico" href="/resources/images/favicon.ico">
+    <link rel="icon" type="image/ico" href="<c:url value="/WebResources/images/favicon.ico" />">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="<c:url value="/resources/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
-  <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
-<%--  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>--%>
+  <link href="<c:url value="/WebResources/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
+  <link href="<c:url value="/WebResources/css/style.css" />" rel="stylesheet">
 </head>
 
 <body role="document">

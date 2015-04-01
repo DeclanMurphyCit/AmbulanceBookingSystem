@@ -9,8 +9,7 @@
 <%@ include file="/WEB-INF/pages/templating/include.jsp"%>
 
 <!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css"
-      href="<% request.getContextPath();%>/resources/datatables/media/css/jquery.dataTables.min.css">
+<link href="<c:url value="/WebResources/datatables/media/css/jquery.dataTables.min.css"/>" rel="stylesheet">
 
 <style>
     #bookingsTable tbody tr {
@@ -105,11 +104,11 @@
         </table>
 </div>
 
-<script src="<%= request.getContextPath() %>/resources/jquery-1.11.2.min.js"></script>
-<script src="<%= request.getContextPath() %>/resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="<%= request.getContextPath() %>/resources/datatables/media/js/jquery.dataTables.min.js"></script>
-<script src="<%= request.getContextPath() %>/resources/datatables/media/js/dataTables.bootstrap.js"></script>
-<script src="<%= request.getContextPath() %>/resources/datatables/media/js/jquery.datatables.datesort.js"></script>
+<script src="<%= request.getContextPath() %>/WebResources/jquery-1.11.2.min.js"></script>
+<script src="<%= request.getContextPath() %>/WebResources/bootstrap/js/bootstrap.min.js"></script>
+<script src="<%= request.getContextPath() %>/WebResources/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="<%= request.getContextPath() %>/WebResources/datatables/media/js/dataTables.bootstrap.js"></script>
+<script src="<%= request.getContextPath() %>/WebResources/datatables/media/js/jquery.datatables.datesort.js"></script>
 
 <script type="text/javascript">
     jQuery(document).ready( function () {

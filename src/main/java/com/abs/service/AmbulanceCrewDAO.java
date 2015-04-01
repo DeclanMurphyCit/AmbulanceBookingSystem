@@ -15,7 +15,7 @@ import java.util.List;
 public interface AmbulanceCrewDAO {
     public void setDataSource(DataSource dataSource);
 
-    public Integer createAmbulanceCrewGetId(Integer ambCompanyId,Integer userId);
+    public Integer createAmbulanceCrewGetId(Integer ambCompanyId,Integer userId,String ambRegNumber);
 
     public void deleteAmbulanceCrew(Integer id);
 

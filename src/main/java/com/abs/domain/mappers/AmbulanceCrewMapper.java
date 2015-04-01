@@ -15,8 +15,10 @@ public class AmbulanceCrewMapper   implements RowMapper {
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         Integer id = rs.getInt("id");
         Integer ambCompanyId = rs.getInt("ambulanceCompanyId");
+        Integer userId = rs.getInt("userId");
         boolean active = rs.getBoolean("active");
-        AmbulanceCrew ac = new AmbulanceCrew(id,ambCompanyId,active);
+        String ambRegNum= rs.getString("ambRegNum");
+        AmbulanceCrew ac = new AmbulanceCrew(id,ambCompanyId,userId,active,ambRegNum);
         return ac;
     }
 }

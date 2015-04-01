@@ -5,7 +5,7 @@
     <title>jQuery UI Datepicker - Format date</title>
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    <link rel="stylesheet" href="/WebResources/demos/style.css">
     <script>
         $(function() {
             $( "#datepicker" ).datepicker();

@@ -45,8 +45,8 @@ public class AmbulanceCrewDAOImpl extends JdbcDaoSupport implements AmbulanceCre
 
     @Override
     @Transactional
-    public Integer createAmbulanceCrewGetId(Integer ambCompanyId, Integer userId) {
-        String SQL = "INSERT INTO ambulancecrew (ambulanceCompanyId, userId, archived) "
+    public Integer createAmbulanceCrewGetId(Integer ambCompanyId, Integer userId, String ambRegNumber) {
+        String SQL = "INSERT INTO ambulancecrew (ambulanceCompanyId, userId, archived,ambRegNumber) "
                 + "VALUES(?, ?, false)";
 
         Object[] params=new Object[]{ ambCompanyId, userId};
@@ -92,7 +92,7 @@ public class AmbulanceCrewDAOImpl extends JdbcDaoSupport implements AmbulanceCre
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public List<AmbulanceCrew> getAllCrewsFromAmbCompany(Integer ambCompId) {
         String SQL = "select * from ambulancecrew where archived = 'n' AND ambulanceCompanyId = ?";
-        List<AmbulanceCrew> acList = getJdbcTemplate().query(SQL,
+        List<AmbulanceCrew> acList = getJdbcTemplate().query(SQL,new Object[]{ambCompId},
                 new AmbulanceCrewMapper());
         return acList;
     }

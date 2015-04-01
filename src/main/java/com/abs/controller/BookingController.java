@@ -168,6 +168,7 @@ public class BookingController {
     public String bookingPermission(ModelMap model) {
 
         List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllUnapprovedBookings();
+
         model.addAttribute("bookings", listBookings);
 
         String bookingIdArray = " ";
@@ -196,6 +197,40 @@ public class BookingController {
         model.addAttribute("numberOfBookings", listBookings.size());
 
         return "bookingPermission";
+    }
+
+    @RequestMapping(value={"/mobileBookingPermission"}, method = RequestMethod.GET)
+    public String mobileBookingPermission(ModelMap model) {
+
+        List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllUnapprovedBookings();
+        model.addAttribute("bookings", listBookings);
+
+        String bookingIdArray = " ";
+
+        Map<Integer,String> listPatients = new HashMap<Integer,String>();
+        Map<Integer,String> listUsers = new HashMap<Integer,String>();
+
+        for(AmbulanceBooking b : listBookings)
+        {
+            bookingIdArray += b.getBookingId() + ", ";
+            Patient p = patientDAO.getPatient(b.getPatientId());
+            String patientName = p.getFirstName() + " " + p.getLastName();
+            listPatients.put(b.getBookingId(),patientName );
+
+            UserObj u = userObjDAO.getUser(b.getCreatedBy());
+            String usersName = u.getFirstName() + " " + u.getLastName();
+            listUsers.put(b.getBookingId(),usersName);
+        }
+
+        bookingIdArray = bookingIdArray.substring(0, bookingIdArray.length()-1);
+        model.addAttribute("bookingIdArray",bookingIdArray);
+        model.addAttribute("patients", listPatients);
+        model.addAttribute("users", listUsers);
+        List<Location> listLoc = locationDAO.getAllLocations();
+        model.addAttribute("locations", listLoc);
+        model.addAttribute("numberOfBookings", listBookings.size());
+
+        return "mobileBookingPermission";
     }
 
     @RequestMapping(value={"/acceptBooking"}, method = RequestMethod.POST   )
@@ -238,13 +273,10 @@ public class BookingController {
     public @ResponseBody String getNewUnapprovedBookings(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
 
         List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllUnapprovedBookings();
-        if(listBookings.size() > 0)
-        {
+
             Gson gson = new Gson();
             String json = gson.toJson(listBookings);
             return json;
-        }
-            return "none";
     }
 
     @RequestMapping(value="/modifyBooking", method = RequestMethod.GET)

@@ -58,7 +58,8 @@ public class AmbCompanyController {
 
         List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getNewBookingsForAmbCompany(ambCompany.getId());
         model.addAttribute("bookings", listBookings);
-        List<AmbulanceCrew> listCrews = ambulanceCrewDAO.getAllCrews();
+        List<AmbulanceCrew> listCrews = ambulanceCrewDAO.getAllCrewsFromAmbCompany(ambCompany.getId());
+        model.addAttribute("crews", listCrews);
 
         String bookingIdArray = " ";
 
@@ -83,7 +84,7 @@ public class AmbCompanyController {
     }
 
     @RequestMapping(value={"/cancelBooking"}, method = RequestMethod.POST   )
-    public @ResponseBody String denyBooking(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
+    public @ResponseBody String cancelBooking(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
         Integer bid = Integer.parseInt(bookingId);
         ambulanceBookingDAO.setAmbulanceCompany(bid, -1);
         //TODO Insert call to get a different amb company
@@ -107,6 +108,22 @@ public class AmbCompanyController {
             return json;
         }
         return "none";
+    }
+
+    @RequestMapping(value={"/assignCrew"}, method = RequestMethod.POST   )
+    public @ResponseBody String assignCrew(@ModelAttribute("bookingId") String bookingId,
+                                           @ModelAttribute("crewId") String crewId, BindingResult result) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        if(auth.getName().equals("anonymousUser"))
+        {
+            return "notLoggedIn";
+        }
+        UserObj userObj = userObjDAO.getUserByUsername(name);
+        Integer bid = Integer.parseInt(bookingId);
+        ambulanceBookingDAO.setApproval(bid,false,userObj.getId());
+        return "success";
     }
 
 }
