@@ -227,7 +227,7 @@ public class BookingController {
         ambulanceBookingDAO.setApproval(bid, true, userObj.getId());
         List<AmbulanceCompany> ambComps =  ambulanceCompanyDAO.getAllCompanies();
         int randomId = new Random().nextInt(ambComps.size());//TODO Link to broker system
-        ambulanceBookingDAO.setAmbulanceCompany(bid, ambComps.get(randomId).getId());
+        ambulanceBookingDAO.setAmbulanceCompany(bid, ambComps.get(0).getId());
         return "success";
     }
 
