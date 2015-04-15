@@ -21,6 +21,8 @@ public interface AmbulanceCrewDAO {
 
     public AmbulanceCrew getCrew(Integer id);
 
+    public AmbulanceCrew getCrewUserId(Integer userId);
+
     public List<AmbulanceCrew> getAllCrews();
 
     public List<AmbulanceCrew> getAllCrewsFromAmbCompany(Integer ambCompId);

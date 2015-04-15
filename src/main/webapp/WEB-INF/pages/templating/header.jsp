@@ -26,6 +26,8 @@ if(!ua.matches("(?i).*((android|bb\\d+|meego).+mobile|avantgo|bada\\/|blackberry
 
                                 <security:authorize access="hasAnyRole('ROLE_NURSE','ROLE_ADMIN','ROLE_ADON')">
                                     <li><a href="<%= request.getContextPath() %>/ambbooking/addNewBooking">Add Booking</a></li>
+                                    </security:authorize>
+                                <security:authorize access="hasAnyRole('ROLE_NURSE','ROLE_ADMIN','ROLE_ADON','ROLE_AMB_COMP')">
                                     <li><a href="<%= request.getContextPath() %>/ambbooking/displayBookings">Display All Bookings</a></li>
                                 </security:authorize>
                                 <security:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_ADON')">
@@ -34,11 +36,12 @@ if(!ua.matches("(?i).*((android|bb\\d+|meego).+mobile|avantgo|bada\\/|blackberry
                                 <security:authorize access="hasAnyRole('ROLE_AMB_COMP')">
                                     <li><a href="<%= request.getContextPath() %>/ambcompany/bookingStandby">Booking Standby</a></li>
                                 </security:authorize>
+                                <security:authorize access="hasAnyRole('ROLE_AMB_CREW')">
+                                    <li><a href="<%= request.getContextPath() %>/ambcompany/ambCrewApp">Ambulance Crew App</a></li>
+                                </security:authorize>
                             </ul>
                         </li>
                         <li>
-
-
                             <a href="<%request.getContextPath();%>${url}" class="ui-btn ui-icon-search ui-btn-icon-left">Logout</a>
                             </security:authorize>
                             <security:authorize access="isAnonymous()">

@@ -14,6 +14,8 @@ public class UserObj {
 		this.lastName = lastName;
 	}
 
+    public UserObj(){}
+
 
     public Integer getId() {
         return id;

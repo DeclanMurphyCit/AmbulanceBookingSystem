@@ -81,6 +81,15 @@ public class AmbulanceCrewDAOImpl extends JdbcDaoSupport implements AmbulanceCre
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    public AmbulanceCrew getCrewUserId(Integer userId) {
+        String SQL = "select * from ambulancecrew where userId = ? and archived = 'n'";
+        AmbulanceCrew ac = (AmbulanceCrew) getJdbcTemplate().queryForObject(SQL,
+                new Object[]{userId}, new AmbulanceCrewMapper());
+        return ac;
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public List<AmbulanceCrew> getAllCrews() {
         String SQL = "select * from ambulancecrew where archived = 'n'";
         List<AmbulanceCrew> acList = getJdbcTemplate().query(SQL,

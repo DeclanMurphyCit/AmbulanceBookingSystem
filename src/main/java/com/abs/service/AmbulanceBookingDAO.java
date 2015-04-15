@@ -29,7 +29,13 @@ public interface AmbulanceBookingDAO {
 
     public List<AmbulanceBooking> getNewBookingsForAmbCompany(Integer ambCompanyId);
 
+    public List<AmbulanceBooking> getAllAmbCrewBookings(Integer ambCrewId);
+
     public void setApproval(Integer id, boolean approval,Integer approvedBy);
+
+    public void setStatus(Integer bookingId,Integer status);
+
+    public void setAmbulanceCrew(Integer bookingId, Integer crewId);
 
     public Integer countRows();
 }

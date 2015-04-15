@@ -38,7 +38,7 @@
     <div class="alert alert-danger panel-body" role="alert" id="booking-${ab.bookingId}">
         </c:when>
         <c:otherwise>
-        <div id="booking-${ab.bookingId}"  class="panel-body alert-info">
+        <div id="booking-${ab.bookingId}" class="panel-body alert-info">
             </c:otherwise>
             </c:choose>
 
@@ -97,18 +97,23 @@
 
             <div class="col-md-2" align="right" style="margin-top: 5px" >Assigned Crew:</div>
             <div class="col-md-9" align="left" style="display: flex">
-                <select   class="form-control" onchange="assignCrew(${ab.bookingId})" id="assignedCrew-${ab.bookingId}">
-                    <option value=""></option>
+                <select class="form-control" onchange="assignCrew(${ab.bookingId})" id="assignedCrew-${ab.bookingId}">
+                    <option value="-1"></option>
                     <c:forEach var="crew" items="${crews}">
-                        <option  value="${crew.id}">${crew.ambRegNum}</option>
+                        <option  <c:if test="${ab.ambCrewId == crew.id}"> selected </c:if>
+                                value="${crew.id}">${crew.ambRegNum}</option>
                     </c:forEach>
                 </select>
                 <span class="" id="assigned-${ab.bookingId}" aria-hidden="false" style="margin-top: 7px"></span>
 
 
             </div>
-            <div class="col-md-11" style="margin-top: 15px">
-                <button class="btn btn-danger" style="width: 155px;" id="deny-${ab.bookingId}" onclick="cancelBooking(${ab.bookingId})">Cancel Booking</button>
+
+            <div class="col-md-6" style="alignment: center; margin-top: 15px">
+                <button class="btn btn-success" style="width: 135px; display: none;" id="confirm-${ab.bookingId}" onclick="closeDialog(${ab.bookingId})">Confirm</button>
+            </div>
+            <div class="col-md-6" style="alignment: center; margin-top: 15px">
+                <button class="btn btn-danger" style="width: 135px;" id="deny-${ab.bookingId}" onclick="cancelBooking(${ab.bookingId})">Cancel Booking</button>
             </div>
         </div>
 
@@ -117,22 +122,26 @@
     </div>
     <div id="dialog"></div>
     <script src="<%= request.getContextPath() %>/WebResources/jquery-1.11.2.min.js"></script>
-    <script src="<%= request.getContextPath() %>/WebResources/jqueryui/jquery-ui.min.js"></script>
     <script src="<%= request.getContextPath() %>/WebResources/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="<%= request.getContextPath() %>/WebResources/jqueryui/jquery-ui.min.js"></script>
+
 
     <script type="text/javascript">
         var bookingIdArray = [ ${bookingIdArray}];
         var numBookings = ${numberOfBookings};
+
         if(numBookings ==0) jQuery("#numBookings").removeClass("label-warning").addClass("label-primary");
 
         function assignCrew(bookingId) {
 
             var crewId = jQuery("#assignedCrew-"+bookingId).val();
+            jQuery("#confirm-"+bookingId).attr("disabled", false);
 
             jQuery.ajax({
                 type: "POST",
-                url: '<%=request.getContextPath()%>/ambCompany/assignCrew',
-                data: ({bookingId : bookingId},{crewId : crewId}),
+                url: '<%=request.getContextPath()%>/ambcompany/assignCrew',
+                data: ({bookingId : bookingId,crewId : crewId}),
                 success: function(data) {
                     if(data == "success")
                     {
@@ -151,14 +160,14 @@
 
         function cancelBooking(bookingId) {
 
-            jQuery("#dialog").html("Are you sure you want to cancel this booking?");
+            jQuery("#dialog").html("Are you sure you want to cancel this booking?<br>Another ambulance company will be assigned to transfer the patient.");
             // Define the Dialog and its properties.
             jQuery("#dialog").dialog({
                 resizable: false,
                 modal: true,
                 title: "Alert",
-                height: 175,
-                width: 300,
+                height: 195,
+                width: 380,
                 buttons: {
                     "Yes": function () {
                         jQuery(this).dialog('close');
@@ -178,7 +187,6 @@
                                     }
                                     else
                                         jQuery("#numBookings").text("Number of active bookings: " +numBookings);
-
                                 }
                             },
                             error: function(e){
@@ -188,14 +196,38 @@
                     },
                     "No": function () {
                         jQuery(this).dialog('close');
-
                     }
                 }
             });
         }
 
         jQuery(document).ready(function () {
-            setInterval(function() {
+
+            var dialogOpen = false;
+
+            jsonBookingArray.forEach(function(obj) { //If a transfer was rejected by a crew a dialog appears ensuring that a new crew is selected
+                if(obj.status == 6){
+                    dialogOpen = true;
+                    jQuery("#confirm-"+obj.bookingId).show().attr("disabled", true);
+                    var ambReg = jQuery("#assignedCrew-"+obj.bookingId).find(":selected").text();
+
+                    jQuery("#assignedCrew-"+obj.bookingId + " option:selected").attr('disabled','disabled')
+                            .siblings().removeAttr('disabled');
+
+                    jQuery("#booking-"+obj.bookingId).dialog({
+                        width: "515px",
+                        resizable: false,
+                        close: function() {
+                            location.reload();
+                            dialogOpen = false;
+                        },
+                        title: "Crew Cancellation: Please select another ambulance crew"
+                    });
+                }
+            });
+
+
+            setInterval(function() { //Checks for updates
                 jQuery.ajax({
                     type: "GET",
                     dataType: 'json',
@@ -204,21 +236,39 @@
                     success: function (data) {
                         if (data != "none") {
                             jQuery.each(data, function(index, element) {
+
+                                //Reload this page if a new booking is made which does not appear on this page
                                 if(arrayContains(element.bookingId)== false)
                                     location.reload();
+
+                                //Reload this page if a booking was cancelled (booking status mismatch)
+                                jsonBookingArray.forEach(function(obj) {
+                                    if(element.bookingId == obj.bookingId)
+                                    {
+                                        if(obj.status != element.status && dialogOpen == false)
+                                            location.reload();
+                                    }
+                                });
                             });
                         }
                     },
                     error: function (e) {
-                        //  alert('Error: ' + e);
+                        console.log('Error: ' + e);
                     }
                 });
             }, 5000);
         });
 
+        function closeDialog(bookingId)
+        {
+            jQuery('#booking-'+bookingId).dialog('close');
+        }
+
         function arrayContains(id)
         {
             return (bookingIdArray.indexOf(id) > -1);
         }
+
+        var jsonBookingArray =  ${jsonBookingArray};
 
     </script>

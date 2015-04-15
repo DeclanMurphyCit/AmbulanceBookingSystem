@@ -17,6 +17,7 @@ public class AmbulanceBookingMapper  implements RowMapper {
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         Integer id = rs.getInt("id");
         Integer ambCompanyId = rs.getInt("ambCompanyId");
+        Integer ambCrewId = rs.getInt("ambCrewId");
         Integer patientId = rs.getInt("patientId");
         Integer createdBy = rs.getInt("createdBy");
         Integer destination = rs.getInt("destination");
@@ -28,9 +29,11 @@ public class AmbulanceBookingMapper  implements RowMapper {
         double cost = rs.getDouble("cost");
         String dateCreated = rs.getString("creationDateTime");
         String dateOfTransfer = rs.getString("transferDateTime");
+        Integer status = rs.getInt("status");
 
-        AmbulanceBooking a = new AmbulanceBooking(id, patientId,ambCompanyId, createdBy,
-        destination, origin, cardiac,urgent, approved,approvedBy, cost, dateCreated, dateOfTransfer);
+
+        AmbulanceBooking a = new AmbulanceBooking(id, patientId,ambCompanyId,ambCrewId, createdBy,
+        destination, origin, cardiac,status,urgent, approved,approvedBy, cost, dateCreated, dateOfTransfer);
 
         return a;
     }

@@ -30,18 +30,21 @@ public class AmbulanceBooking {
     private double cost;
     private String dateCreated;
     private String dateOfTransfer;
+    private Integer status;
 
 
-    public AmbulanceBooking(Integer bookingId, Integer patientId,Integer ambCompanyId, Integer createdBy,
-                            Integer destination, Integer origin, boolean cardiac,
+    public AmbulanceBooking(Integer bookingId, Integer patientId,Integer ambCompanyId,Integer ambCrewId, Integer createdBy,
+                            Integer destination, Integer origin, boolean cardiac, Integer status,
                             boolean urgent, boolean approved, Integer approvedBy, double cost, String dateCreated, String dateOfTransfer) {
         this.bookingId = bookingId;
         this.patientId = patientId;
         this.ambCompanyId = ambCompanyId;
+        this.ambCrewId = ambCrewId;
         this.createdBy = createdBy;
         this.destination = destination;
         this.origin = origin;
         this.cardiac = cardiac;
+        this.status = status;
         this.urgent = urgent;
         this.approved = approved;
         this.approvedBy = approvedBy;
@@ -50,12 +53,13 @@ public class AmbulanceBooking {
         this.dateOfTransfer = dateOfTransfer;
     }
 
-    public AmbulanceBooking(Integer bookingId, Integer patientId,Integer ambCompanyId, Integer createdBy,
+    public AmbulanceBooking(Integer bookingId, Integer patientId,Integer ambCompanyId,Integer ambCrewId, Integer createdBy,
                             Integer destination, Integer origin, boolean cardiac,
                             boolean urgent/*, Date dateCreated, Date dateOfTransfer*/) { //TODO Add date functionality
         this.bookingId = bookingId;
         this.patientId = patientId;
         this.ambCompanyId = ambCompanyId;
+        this.ambCrewId = ambCrewId;
         this.createdBy = createdBy;
         this.destination = destination;
         this.origin = origin;
@@ -188,4 +192,11 @@ public class AmbulanceBooking {
         this.approvedBy = approvedBy;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 }

@@ -80,6 +80,10 @@ public class AmbCompanyController {
         model.addAttribute("locations", listLoc);
         model.addAttribute("numberOfBookings", listBookings.size());
 
+        Gson gson = new Gson();
+        String json = gson.toJson(listBookings);
+        model.addAttribute("jsonBookingArray",json);
+
         return "bookingStandby";
     }
 
@@ -87,12 +91,13 @@ public class AmbCompanyController {
     public @ResponseBody String cancelBooking(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
         Integer bid = Integer.parseInt(bookingId);
         ambulanceBookingDAO.setAmbulanceCompany(bid, -1);
+        ambulanceBookingDAO.setAmbulanceCrew(bid, -1);
         //TODO Insert call to get a different amb company
         return "success";
     }
 
     @RequestMapping(value={"/getNewBookings"}, method = RequestMethod.GET   )
-    public @ResponseBody String getNewUnapprovedBookings(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
+    public @ResponseBody String getBookings(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
@@ -120,10 +125,79 @@ public class AmbCompanyController {
         {
             return "notLoggedIn";
         }
-        UserObj userObj = userObjDAO.getUserByUsername(name);
+        Integer cid = Integer.parseInt(crewId);
         Integer bid = Integer.parseInt(bookingId);
-        ambulanceBookingDAO.setApproval(bid,false,userObj.getId());
+
+        //TODO Add check to see if crew is busy
+
+        ambulanceBookingDAO.setStatus(bid,2);
+        ambulanceBookingDAO.setAmbulanceCrew(bid, cid);
         return "success";
     }
 
+    @RequestMapping(value={"/ambCrewApp"}, method = RequestMethod.GET)
+    public String ambMobileApp(ModelMap model) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        UserObj userObj = userObjDAO.getUserByUsername(name);
+
+        AmbulanceCrew ac = ambulanceCrewDAO.getCrewUserId(userObj.getId());
+
+        List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllAmbCrewBookings(ac.getId());
+        model.addAttribute("bookings", listBookings);
+        String bookingIdArray = " ";
+        Map<Integer,String> listPatients = new HashMap<Integer,String>();
+
+        for(AmbulanceBooking b : listBookings)
+        {
+            bookingIdArray += b.getBookingId() + ", ";
+            Patient p = patientDAO.getPatient(b.getPatientId());
+            String patientName = p.getFirstName() + " " + p.getLastName();
+            listPatients.put(b.getBookingId(), patientName);
+        }
+
+        bookingIdArray = bookingIdArray.substring(0, bookingIdArray.length()-1);
+        model.addAttribute("bookingIdArray",bookingIdArray);
+        model.addAttribute("patients", listPatients);
+        List<Location> listLoc = locationDAO.getAllLocations();
+        model.addAttribute("locations", listLoc);
+        model.addAttribute("numberOfBookings", listBookings.size());
+
+        return "ambCrewApp";
+    }
+
+    @RequestMapping(value={"/getNewCrewBookings"}, method = RequestMethod.GET   )
+    public @ResponseBody String getNewCrewBookings(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        UserObj userObj = userObjDAO.getUserByUsername(name);
+        AmbulanceCrew ac = ambulanceCrewDAO.getCrewUserId(userObj.getId());
+
+        List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllAmbCrewBookings(ac.getId());
+
+        Gson gson = new Gson();
+        String json = gson.toJson(listBookings);
+        return json;
+    }
+
+    @RequestMapping(value={"/setBookingStatus"}, method = RequestMethod.POST   )
+    public @ResponseBody String setBookingStatus(@ModelAttribute("bookingId") String bookingId,
+                                                 @ModelAttribute("status") String status, BindingResult result) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        if(auth.getName().equals("anonymousUser"))
+        {
+            return "notLoggedIn";
+        }
+        Integer statusId = Integer.parseInt(status);
+        Integer bid = Integer.parseInt(bookingId);
+
+        //TODO Add check to see if crew is busy
+
+        ambulanceBookingDAO.setStatus(bid,statusId);
+        return "success";
+    }
 }

@@ -2,7 +2,7 @@
 
 <style>
   .btn-primary{
-    width: 150px;
+    width: 160px;
     margin-bottom: 10px;
   }
 
@@ -25,11 +25,17 @@
   <security:authorize access="hasAnyRole('ROLE_AMB_COMP')">
     <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambcompany/bookingStandby'">Booking Standby</button>
   </security:authorize>
+  <security:authorize access="hasAnyRole('ROLE_AMB_CREW')">
+    <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambcompany/ambCrewApp'">Ambulance Crew App</button>
+  </security:authorize>
   <% } else {
   %>
 <security:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_ADON')">
   <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambbooking/bookingPermission'">Booking Approval</button>
 </security:authorize>
+  <security:authorize access="hasAnyRole('ROLE_AMB_CREW')">
+    <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambcompany/ambCrewApp'">Ambulance Crew App</button>
+  </security:authorize>
   <%
     }
   %>

@@ -73,7 +73,6 @@ public class AmbulanceBookingDAOImpl extends JdbcDaoSupport implements Ambulance
         getJdbcTemplate().update(psc.newPreparedStatementCreator(params), holder);
 
         String key=holder.getKey().toString();
-        System.out.println("Created ambulance booking with id: " + key + " to destination: "+ destination);
         return Integer.parseInt(key);
     }
 
@@ -112,7 +111,7 @@ public class AmbulanceBookingDAOImpl extends JdbcDaoSupport implements Ambulance
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public List<AmbulanceBooking> getAllUnapprovedBookings() {
-        String SQL = "select * from ambulancebooking where archived = 'n' AND approvedBy = -1 ORDER BY urgent DESC";
+        String SQL = "select * from ambulancebooking where archived = 'n' AND approvedBy = -1 ORDER BY urgent DESC, transferDateTime ASC";
         List<AmbulanceBooking> abList = getJdbcTemplate().query(SQL,
                 new AmbulanceBookingMapper());
         return abList;
@@ -122,16 +121,42 @@ public class AmbulanceBookingDAOImpl extends JdbcDaoSupport implements Ambulance
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public List<AmbulanceBooking> getNewBookingsForAmbCompany(Integer ambCompId) {
         String SQL = "select * from ambulancebooking where archived = 'n' AND approvedBy != -1 AND " +
-                "approved = true AND ambCompanyId = ? ORDER BY urgent DESC";
+                "approved = true AND ambCompanyId = ? ORDER BY urgent DESC, transferDateTime ASC";
         List<AmbulanceBooking> abList = getJdbcTemplate().query(SQL,new Object[]{ambCompId},
                 new AmbulanceBookingMapper());
         return abList;
     }
 
     @Override
+    public List<AmbulanceBooking> getAllAmbCrewBookings(Integer ambCrewId) {
+        String SQL = "select * from ambulancebooking where archived = 'n' AND approvedBy != -1 AND " +
+                "approved = true AND ambCrewId = ? AND (status = 2 OR status = 3) ORDER BY urgent DESC, transferDateTime ASC";
+        List<AmbulanceBooking> abList = getJdbcTemplate().query(SQL,new Object[]{ambCrewId},
+                new AmbulanceBookingMapper());
+        return abList;
+    }
+
+    @Override
     public void setApproval(Integer id, boolean approved,Integer approvedBy) {
-        String SQL = "update ambulancebooking set approved = ?, approvedBy = ? where id = ?";
+        String SQL;
+        if(approved == true)
+            SQL = "update ambulancebooking set approved = ?, approvedBy = ?, status = 1 where id = ?";
+        else
+            SQL = "update ambulancebooking set approved = ?, approvedBy = ?, status = 4 where id = ?";
+
         getJdbcTemplate().update(SQL, new Object[] {approved,approvedBy,id});
+    }
+
+    @Override
+    public void setAmbulanceCrew(Integer bookingId,Integer crewId) {
+        String SQL = "update ambulancebooking set ambCrewId = ? where id = ?";
+        getJdbcTemplate().update(SQL, new Object[] {crewId,bookingId});
+    }
+
+    @Override
+    public void setStatus(Integer bookingId,Integer status) {
+        String SQL = "update ambulancebooking set status = ? where id = ?";
+        getJdbcTemplate().update(SQL, new Object[] {status,bookingId});
     }
 
     @Override
