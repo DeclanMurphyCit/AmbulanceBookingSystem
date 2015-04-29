@@ -51,6 +51,11 @@
         <put-attribute name="body" value="/WEB-INF/pages/ambulancecompany/ambCrewApp.jsp"></put-attribute>
     </definition>
 
+    <definition extends="base.definition" name="addNewCrew">
+        <put-attribute name="title" value="Booking Permission"></put-attribute>
+        <put-attribute name="body" value="/WEB-INF/pages/admin/addCrew.jsp"></put-attribute>
+    </definition>
+
     <definition extends="base.definition" name="error">
         <put-attribute name="title" value="Error"></put-attribute>
         <put-attribute name="body" value="/WEB-INF/pages/error.jsp"></put-attribute>

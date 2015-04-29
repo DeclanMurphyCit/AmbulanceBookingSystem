@@ -153,7 +153,7 @@
                     <c:otherwise>
                         <c:forEach var="crew" items="${crews}">
                             <c:if test="${ab.ambCrewId == crew.id}">
-                                <td>${ crew.ambRegNum}<c:if test="${ab.status == 6}"> [Cancelled]</c:if> </td>
+                                <td>${ crew.crewIdentifier}<c:if test="${ab.status == 6}"> [Cancelled]</c:if> </td>
                             </c:if>
                         </c:forEach>
                     </c:otherwise>
@@ -179,7 +179,7 @@
             /*"sScrollY": "330px",*/
             "bScrollCollapse": false,
             "bPaginate": false,
-            "bFilter": false,
+            //"bFilter": false,
             "bProcessing": true,
             "bDeferRender": false,
             //    "aaSortingFixed": [[ 0, 'desc' ]],

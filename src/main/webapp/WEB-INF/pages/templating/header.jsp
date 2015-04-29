@@ -35,6 +35,7 @@ if(!ua.matches("(?i).*((android|bb\\d+|meego).+mobile|avantgo|bada\\/|blackberry
                                 </security:authorize>
                                 <security:authorize access="hasAnyRole('ROLE_AMB_COMP')">
                                     <li><a href="<%= request.getContextPath() %>/ambcompany/bookingStandby">Booking Standby</a></li>
+                                    <li><a href="<%= request.getContextPath() %>/admin/addNewCrew">Add Crew</a></li>
                                 </security:authorize>
                                 <security:authorize access="hasAnyRole('ROLE_AMB_CREW')">
                                     <li><a href="<%= request.getContextPath() %>/ambcompany/ambCrewApp">Ambulance Crew App</a></li>

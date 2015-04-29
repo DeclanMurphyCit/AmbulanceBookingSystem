@@ -17,4 +17,6 @@ public interface UserObjDAO {
     public UserObj getUser(Integer id);
 
     public UserObj getUserByUsername(String username);
+
+    public int createUserGetId(String username, String password, String firstname,String lastname,String authority);
 }

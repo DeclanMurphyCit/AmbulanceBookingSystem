@@ -17,8 +17,8 @@ public class AmbulanceCrewMapper   implements RowMapper {
         Integer ambCompanyId = rs.getInt("ambulanceCompanyId");
         Integer userId = rs.getInt("userId");
         boolean active = rs.getBoolean("active");
-        String ambRegNum= rs.getString("ambRegNum");
-        AmbulanceCrew ac = new AmbulanceCrew(id,ambCompanyId,userId,active,ambRegNum);
+        String crewIdentifier= rs.getString("crewIdentifier");
+        AmbulanceCrew ac = new AmbulanceCrew(id,ambCompanyId,userId,active,crewIdentifier);
         return ac;
     }
 }

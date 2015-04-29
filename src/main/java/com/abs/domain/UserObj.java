@@ -6,13 +6,22 @@ public class UserObj {
 	private String userName;
 	private String firstName;
 	private String lastName;
+    private String password;
 
-	public UserObj(Integer id, String userName, String firstName, String lastName) {
+	public UserObj(Integer id, String userName, String firstName, String lastName, String password) {
 		this.id = id;
 		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
+        this.password = password;
 	}
+
+    public UserObj(Integer id, String userName, String firstName, String lastName) {
+        this.id = id;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     public UserObj(){}
 
@@ -47,5 +56,13 @@ public class UserObj {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

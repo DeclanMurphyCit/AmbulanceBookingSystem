@@ -17,13 +17,17 @@
   %>
   <security:authorize access="hasAnyRole('ROLE_NURSE','ROLE_ADMIN','ROLE_ADON')">
     <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambbooking/addNewBooking'">Add Booking</button>
+  </security:authorize>
+  <security:authorize access="hasAnyRole('ROLE_NURSE','ROLE_ADMIN','ROLE_ADON','ROLE_AMB_COMP')">
     <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambbooking/displayBookings'">Display Bookings</button>
   </security:authorize>
+
   <security:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_ADON')">
     <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambbooking/bookingPermission'">Booking Approval</button>
   </security:authorize>
   <security:authorize access="hasAnyRole('ROLE_AMB_COMP')">
     <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambcompany/bookingStandby'">Booking Standby</button>
+    <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/admin/addNewCrew'">Add Crew</button>
   </security:authorize>
   <security:authorize access="hasAnyRole('ROLE_AMB_CREW')">
     <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambcompany/ambCrewApp'">Ambulance Crew App</button>

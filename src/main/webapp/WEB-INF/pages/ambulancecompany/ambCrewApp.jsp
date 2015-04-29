@@ -165,6 +165,7 @@
   }
 
   function setBookingStatus(bookingId,status) {
+    console.log(status);
     jQuery.ajax({
       type: "POST",
       url: '<%=request.getContextPath()%>/ambcompany/setBookingStatus',
@@ -187,7 +188,6 @@
             jQuery("#arrived-origin-"+bookingId).hide();
             jQuery("#arrived-dest-"+bookingId).show();
           }
-
 
         } else if ( data == "notLoggedIn")
         {

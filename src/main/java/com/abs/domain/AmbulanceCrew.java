@@ -6,23 +6,23 @@ public class AmbulanceCrew {
 	private Integer ambCompanyId;
 	private Integer userId;
 	private boolean active;
-	private String ambRegNum;
+	private String crewIdentifier;
 	
-	public AmbulanceCrew(Integer id,Integer ambCompanyId, Integer userId, boolean active, String ambRegNum) {
+	public AmbulanceCrew(Integer id,Integer ambCompanyId, Integer userId, boolean active, String crewIdentifier) {
 		super();
 		this.id = id;
 		this.ambCompanyId = ambCompanyId;
 		this.userId = userId;
 		this.active = active;
-		this.ambRegNum = ambRegNum;
+		this.crewIdentifier = crewIdentifier;
 	}
 	
-	public AmbulanceCrew(Integer ambCompanyId, Integer userId,boolean active,String ambRegNum) {
+	public AmbulanceCrew(Integer ambCompanyId, Integer userId,boolean active,String crewIdentifier) {
 		super();
 		this.ambCompanyId = ambCompanyId;
 		this.userId = userId;
 		this.active = active;
-		this.ambRegNum = ambRegNum;
+		this.crewIdentifier = crewIdentifier;
 	}
 	
 	public AmbulanceCrew(){}
@@ -52,10 +52,10 @@ public class AmbulanceCrew {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	public String getAmbRegNum() {
-		return ambRegNum;
+	public String getcrewIdentifier() {
+		return crewIdentifier;
 	}
-	public void setAmbRegNum(String ambRegNum) {
-		this.ambRegNum = ambRegNum;
+	public void setcrewIdentifier(String crewIdentifier) {
+		this.crewIdentifier = crewIdentifier;
 	}
 }

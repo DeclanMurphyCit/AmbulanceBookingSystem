@@ -45,20 +45,20 @@ public class AmbulanceCrewDAOImpl extends JdbcDaoSupport implements AmbulanceCre
 
     @Override
     @Transactional
-    public Integer createAmbulanceCrewGetId(Integer ambCompanyId, Integer userId, String ambRegNumber) {
-        String SQL = "INSERT INTO ambulancecrew (ambulanceCompanyId, userId, archived,ambRegNumber) "
-                + "VALUES(?, ?, false)";
+    public Integer createAmbulanceCrewGetId(Integer ambCompanyId, Integer userId, String crewIdentifierber) {
+        String SQL = "INSERT INTO ambulancecrew (ambulanceCompanyId, userId, archived,active,crewIdentifier) "
+                + "VALUES(?, ?, 'n',1,?)";
 
-        Object[] params=new Object[]{ ambCompanyId, userId};
+        Object[] params=new Object[]{ ambCompanyId, userId,crewIdentifierber};
         PreparedStatementCreatorFactory psc=new PreparedStatementCreatorFactory(SQL);
         psc.addParameter(new SqlParameter("ambCompanyId", Types.INTEGER));
         psc.addParameter(new SqlParameter("userId", Types.INTEGER));
+        psc.addParameter(new SqlParameter("crewIdentifier", Types.VARCHAR));
 
         KeyHolder holder = new GeneratedKeyHolder();
         getJdbcTemplate().update(psc.newPreparedStatementCreator(params), holder);
 
         String key=holder.getKey().toString();
-        System.out.println("Created ambulance crew with id: " + key );
         return Integer.parseInt(key);
     }
 

@@ -2,6 +2,7 @@ package com.abs.controller;
 
 import com.abs.domain.*;
 import com.abs.service.*;
+import com.abs.service.broker.BrokerImpl;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -90,9 +91,14 @@ public class AmbCompanyController {
     @RequestMapping(value={"/cancelBooking"}, method = RequestMethod.POST   )
     public @ResponseBody String cancelBooking(@ModelAttribute("bookingId") String bookingId, BindingResult result) {
         Integer bid = Integer.parseInt(bookingId);
-        ambulanceBookingDAO.setAmbulanceCompany(bid, -1);
+
+        AmbulanceBooking ab = ambulanceBookingDAO.getBooking(bid);
+        BrokerImpl broker = new BrokerImpl();
+        AmbulanceCompany secondOptimalAC = broker.getSecondOptimalCompany
+                (ambulanceCompanyDAO.getAllCompanies(), ab.isCardiac(), ab.isUrgent(), ab.getAmbCompanyId());
+
+        ambulanceBookingDAO.setAmbulanceCompany(bid, secondOptimalAC.getId());
         ambulanceBookingDAO.setAmbulanceCrew(bid, -1);
-        //TODO Insert call to get a different amb company
         return "success";
     }
 
@@ -106,13 +112,10 @@ public class AmbCompanyController {
         AmbulanceCompany ambCompany = ambulanceCompanyDAO.getCompanyUserId(userObj.getId());
 
         List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getNewBookingsForAmbCompany(ambCompany.getId());
-        if(listBookings.size() > 0)
-        {
+
             Gson gson = new Gson();
             String json = gson.toJson(listBookings);
             return json;
-        }
-        return "none";
     }
 
     @RequestMapping(value={"/assignCrew"}, method = RequestMethod.POST   )

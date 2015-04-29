@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `ambulancecrew` (
 `id` int(11) NOT NULL,
   `ambulanceCompanyId` int(11) DEFAULT NULL,
   `userId` int(11) NOT NULL,
-  `ambRegNum` varchar(20) NOT NULL,
+  `crewIdentifier` varchar(20) NOT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `archived` varchar(1) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `ambulancecrew` (
 -- Dumping data for table `ambulancecrew`
 --
 
-INSERT INTO `ambulancecrew` (`id`, `ambulanceCompanyId`, `userId`, `ambRegNum`, `active`, `archived`) VALUES
+INSERT INTO `ambulancecrew` (`id`, `ambulanceCompanyId`, `userId`, `crewIdentifier`, `active`, `archived`) VALUES
 (1, 1, 6, '05-C-15123', 1, 'n'),
 (2, 1, 7, '98-C-312', 1, 'n'),
 (3, 2, 8, '14-C-4253', 1, 'n'),

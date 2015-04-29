@@ -101,7 +101,7 @@
                     <option value="-1"></option>
                     <c:forEach var="crew" items="${crews}">
                         <option  <c:if test="${ab.ambCrewId == crew.id}"> selected </c:if>
-                                value="${crew.id}">${crew.ambRegNum}</option>
+                                value="${crew.id}">${crew.crewIdentifier}</option>
                     </c:forEach>
                 </select>
                 <span class="" id="assigned-${ab.bookingId}" aria-hidden="false" style="margin-top: 7px"></span>
@@ -115,9 +115,10 @@
             <div class="col-md-6" style="alignment: center; margin-top: 15px">
                 <button class="btn btn-danger" style="width: 135px;" id="deny-${ab.bookingId}" onclick="cancelBooking(${ab.bookingId})">Cancel Booking</button>
             </div>
+            <hr>
         </div>
 
-        <hr>
+
         </c:forEach>
     </div>
     <div id="dialog"></div>
@@ -130,6 +131,7 @@
     <script type="text/javascript">
         var bookingIdArray = [ ${bookingIdArray}];
         var numBookings = ${numberOfBookings};
+        var numBookingsUpdated = 0;
 
         if(numBookings ==0) jQuery("#numBookings").removeClass("label-warning").addClass("label-primary");
 
@@ -214,6 +216,7 @@
                     jQuery("#assignedCrew-"+obj.bookingId + " option:selected").attr('disabled','disabled')
                             .siblings().removeAttr('disabled');
 
+                    jQuery("#dialog").focus();
                     jQuery("#booking-"+obj.bookingId).dialog({
                         width: "515px",
                         resizable: false,
@@ -228,29 +231,35 @@
 
 
             setInterval(function() { //Checks for updates
+                numBookingsUpdated = 0;
                 jQuery.ajax({
                     type: "GET",
                     dataType: 'json',
                     url: '<%=request.getContextPath()%>/ambcompany/getNewBookings',
-                    //data: ({}),
                     success: function (data) {
-                        if (data != "none") {
-                            jQuery.each(data, function(index, element) {
+                        if (data != "({})") {
+                            jQuery.each(data, function (index, element) {
+                                numBookingsUpdated++;
 
                                 //Reload this page if a new booking is made which does not appear on this page
-                                if(arrayContains(element.bookingId)== false)
+                                if (arrayContains(element.bookingId) == false)
                                     location.reload();
 
                                 //Reload this page if a booking was cancelled (booking status mismatch)
-                                jsonBookingArray.forEach(function(obj) {
-                                    if(element.bookingId == obj.bookingId)
-                                    {
-                                        if(obj.status != element.status && dialogOpen == false)
-                                            location.reload();
+                                jsonBookingArray.forEach(function (obj) {
+                                    if (element.bookingId == obj.bookingId) {
+                                        if (obj.status != element.status && dialogOpen == false)
+                                        {
+                                            if(element.status != 2)
+                                                location.reload();
+                                        }
+
                                     }
                                 });
                             });
                         }
+                        if(numBookings != numBookingsUpdated)
+                            location.reload();
                     },
                     error: function (e) {
                         console.log('Error: ' + e);
@@ -268,7 +277,6 @@
         {
             return (bookingIdArray.indexOf(id) > -1);
         }
-
         var jsonBookingArray =  ${jsonBookingArray};
 
     </script>

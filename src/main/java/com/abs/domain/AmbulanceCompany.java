@@ -4,7 +4,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import java.util.Date;
 
 @XStreamAlias("AmbulanceCompany")
-public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
+public class AmbulanceCompany implements Comparable<AmbulanceCompany>{
 	
 	private Integer id;
     private Integer userId;
@@ -79,5 +79,13 @@ public class AmbulanceCompany /*implements Comparable<AmbulanceCompany>*/{
 
 	public void setCostScore(Integer costScore) {
 		this.costScore = costScore;
+	}
+
+	public int compareTo(AmbulanceCompany ac) {
+		double comparePrice = ((AmbulanceCompany) ac).getCost();
+
+		if(this.cost == comparePrice) return 0;
+		else if(this.cost > comparePrice) return 1;
+		else return -1;
 	}
 }

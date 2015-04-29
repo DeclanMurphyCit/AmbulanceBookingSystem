@@ -12,29 +12,44 @@
 <link href="<c:url value="/WebResources/jqueryui/jquery-uimin.css" />" rel="stylesheet">
 <link href="<c:url value="/WebResources/datetimepicker/datepicker.css" />" rel="stylesheet">
 
-
-<form:form method="post" class="form-horizontal" id="companyForm" action="addNewCompany" <%--modelAttribute="ambulancecompany"--%>>
+<form:form method="post" class="form-horizontal" role="form" id="companyForm" modelAttribute="crewuser" action="addNewCrew">
   <div id="main-panel" align="center" style="width:500px;">
     <div id="loading" align="center">
       <img src="/WebResources/images/loading_spinner.gif" style="width:75px;height:75px">
     </div>
     <div id="loadingComplete" style="display: none;">
-      <form:errors path="*" cssClass="errorblock" element="div" />
 
       <div class="form-group">
-        <label class="control-label col-xs-2">Crew Name</label>
-        <div class="col-xs-10">
-          <spring:bind path="user.username">
-            <input type="text" name="${status.expression}" value="${status.value}"><br />
+        <spring:bind path="crewuser.ambulanceCrew.crewIdentifier">
+        <label  class="control-label col-sm-3" for="${status.expression}">Crew&nbsp;Identifier</label>
+        <div class="col-sm-9  ">
+          <input class="form-control" type="text" name="${status.expression}" id="${status.expression}" value="${status.value}"><br />
           </spring:bind>
         </div>
       </div>
 
       <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-10">
-          <input type="submit" data-icon="check" value="Submit"/>
+        <spring:bind path="crewuser.userObj.userName">
+        <label  class="control-label col-sm-3" for="${status.expression}">Username</label>
+        <div class="col-sm-9  ">
+          <input class="form-control" type="text" name="${status.expression}" id="${status.expression}" value="${status.value}"><br />
+          </spring:bind>
         </div>
       </div>
+
+      <div class="form-group">
+        <spring:bind path="crewuser.userObj.password">
+        <label  class="control-label col-sm-3" for="${status.expression}">Password</label>
+        <div class="col-sm-9  ">
+          <input class="form-control" type="password" name="${status.expression}" id="${status.expression}" value="${status.value}"><br />
+          </spring:bind>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="submit" data-icon="check" value="Submit"/>
+      </div>
+
     </div>
   </div>
 </form:form>

@@ -9,6 +9,9 @@
     http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <security:http auto-config="true" use-expressions="true" >
+        <security:intercept-url pattern="/denied/*" access="permitAll" />
+        <security:access-denied-handler error-page="/home"/>
+
         <security:intercept-url pattern="/home" access="hasAnyRole('ROLE_NURSE','ROLE_ADMIN','ROLE_ADON','ROLE_AMB_COMP','ROLE_AMB_CREW')" />
         <security:intercept-url pattern="/ambbooking/addNewBooking" access="hasAnyRole('ROLE_NURSE','ROLE_ADMIN','ROLE_ADON')" />
         <!-- <security:intercept-url pattern="/ambbooking/displayBookings" access="hasAnyRole('ROLE_NURSE','ROLE_ADMIN','ROLE_ADON')" /> -->

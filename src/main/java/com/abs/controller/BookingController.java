@@ -13,6 +13,7 @@ import javax.servlet.ServletContext;
 
 import com.abs.domain.*;
 import com.abs.service.*;
+import com.abs.service.broker.BrokerImpl;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -226,8 +227,12 @@ public class BookingController {
         Integer bid = Integer.parseInt(bookingId);
         ambulanceBookingDAO.setApproval(bid, true, userObj.getId());
         List<AmbulanceCompany> ambComps =  ambulanceCompanyDAO.getAllCompanies();
-        int randomId = new Random().nextInt(ambComps.size());//TODO Link to broker system
-        ambulanceBookingDAO.setAmbulanceCompany(bid, ambComps.get(0).getId());
+        AmbulanceBooking ab = ambulanceBookingDAO.getBooking(bid);
+        BrokerImpl broker = new BrokerImpl();
+        AmbulanceCompany optimalAC = broker.getOptimalCompany(ambComps,
+                ab.isCardiac(), ab.isUrgent());
+
+        ambulanceBookingDAO.setAmbulanceCompany(bid, optimalAC.getId());
         return "success";
     }
 
