@@ -44,7 +44,8 @@ public class AmbCompanyController {
     private ServletContext servletContext;
 
     @RequestMapping(value={"/bookingStandby"}, method = RequestMethod.GET)
-    public String bookingPermission(ModelMap model) {
+    public String bookingStandby(ModelMap model) {
+        model.addAttribute("title","Company Standby Page");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth.getName().equals("anonymousUser"))

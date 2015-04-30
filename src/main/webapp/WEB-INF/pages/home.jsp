@@ -10,6 +10,7 @@
 
 
 <div id="main-panel" align="center" style="width:300px;">
+  <h3>${title}</h3>
   <h4>Please Select an Option</h4>
   <% //Check if mobile
     String ua=request.getHeader("User-Agent").toLowerCase();
@@ -23,7 +24,7 @@
   </security:authorize>
 
   <security:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_ADON')">
-    <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambbooking/bookingPermission'">Booking Approval</button>
+    <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambbooking/bookingPermission'">Booking Permissions</button>
   </security:authorize>
   <security:authorize access="hasAnyRole('ROLE_AMB_COMP')">
     <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambcompany/bookingStandby'">Booking Standby</button>
@@ -32,8 +33,8 @@
   <security:authorize access="hasAnyRole('ROLE_AMB_CREW')">
     <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambcompany/ambCrewApp'">Ambulance Crew App</button>
   </security:authorize>
-  <% } else {
-  %>
+
+  <% } else { %>
 <security:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_ADON')">
   <button class="btn btn-primary" onclick="window.location.href='<%= request.getContextPath() %>/ambbooking/bookingPermission'">Booking Approval</button>
 </security:authorize>
@@ -44,6 +45,12 @@
     }
   %>
 </div>
+
+<div id="dialog"></div>
+
+<script type="text/javascript">
+
+</script>
 
 <script src="<%= request.getContextPath() %>/WebResources/jquery-1.11.2.min.js"></script>
 <script src="<%= request.getContextPath() %>/WebResources/bootstrap/js/bootstrap.min.js"></script>

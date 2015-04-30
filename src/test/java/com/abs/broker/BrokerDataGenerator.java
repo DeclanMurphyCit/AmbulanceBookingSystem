@@ -1,3 +1,4 @@
+/*
 package com.abs.broker;
 
 import com.abs.domain.AmbulanceBooking;
@@ -9,9 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+*/
 /**
  * Created by Declan on 22/01/2015.
- */
+ *//*
+
 public class BrokerDataGenerator {
 
     protected Random r;
@@ -63,3 +66,4 @@ public class BrokerDataGenerator {
 
     }
 }
+*/

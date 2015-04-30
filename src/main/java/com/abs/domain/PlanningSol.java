@@ -1,20 +1,17 @@
+/*
 package com.abs.domain;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
-import org.optaplanner.core.api.domain.solution.PlanningSolution;
-import org.optaplanner.core.api.domain.solution.Solution;
-import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
-import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
-//import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+*/
 /**
  * Created by Declan on 20/01/2015.
- */
+ *//*
+
 
 @PlanningSolution
 @XStreamAlias("PlanningSol")
@@ -57,3 +54,4 @@ public class PlanningSol implements Solution <HardSoftScore> {
         return facts;
     }
 }
+*/

@@ -27,7 +27,7 @@
 </style>
 
 <div id="main-panel" align="center" style="width:480px;">
-    <h2>${message}</h2>
+    <h3>${title}</h3>
 
     <h3><span id="numBookings" class="label label-warning">Number of active bookings: ${numberOfBookings}</span></h3>
 

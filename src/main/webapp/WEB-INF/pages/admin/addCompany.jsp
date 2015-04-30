@@ -16,7 +16,7 @@
 <form:form method="post" class="form-horizontal" id="companyForm" action="addNewCompany" <%--modelAttribute="ambulancecompany"--%>>
   <div id="main-panel" align="center" style="width:500px;">
     <div id="loading" align="center">
-      <img src="/WebResources/images/loading_spinner.gif" style="width:75px;height:75px">
+      <img src="<c:url value="/WebResources/images/loading_spinner.gif" />" style="width:75px;height:75px">
     </div>
     <div id="loadingComplete" style="display: none;">
       <form:errors path="*" cssClass="errorblock" element="div" />

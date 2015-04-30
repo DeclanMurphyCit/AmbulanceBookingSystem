@@ -34,13 +34,8 @@ public class BrokerImpl implements Broker {
         }
 
         AmbulanceCompany[] acList = ambCompListCopy.toArray(new AmbulanceCompany[ambCompListCopy.size()]);
-        for(AmbulanceCompany a: acList)
-            System.out.println(a.getCost());
 
         Arrays.sort(acList);
-
-        for(AmbulanceCompany a: acList)
-            System.out.println(a.getCost());
 
         optimal = acList[0];
 

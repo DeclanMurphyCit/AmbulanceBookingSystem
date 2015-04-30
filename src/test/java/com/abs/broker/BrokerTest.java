@@ -1,3 +1,4 @@
+/*
 package com.abs.broker;
 
 import com.abs.domain.AmbulanceBooking;
@@ -7,9 +8,11 @@ import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+*/
 /**
  * Created by Declan on 20/01/2015.
- */
+ *//*
+
 @WebAppConfiguration
 public class BrokerTest {
 
@@ -50,4 +53,4 @@ public class BrokerTest {
         }
         return displayString.toString();
     }
-}
+}*/

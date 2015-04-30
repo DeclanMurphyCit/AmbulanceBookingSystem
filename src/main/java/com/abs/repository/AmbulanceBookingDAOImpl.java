@@ -129,6 +129,17 @@ public class AmbulanceBookingDAOImpl extends JdbcDaoSupport implements Ambulance
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public List<AmbulanceBooking> getUnassignedBookingsForAmbCompany(Integer ambCompId) {
+        String SQL = "select * from ambulancebooking where status != 4 AND status != 5 " +
+                "AND archived = 'n' AND approvedBy != -1 AND (ambCrewId = -1 or ambCrewId = null)  AND " +
+                "approved = true AND ambCompanyId = ? ORDER BY urgent DESC, transferDateTime ASC";
+        List<AmbulanceBooking> abList = getJdbcTemplate().query(SQL,new Object[]{ambCompId},
+                new AmbulanceBookingMapper());
+        return abList;
+    }
+
+    @Override
     public List<AmbulanceBooking> getAllAmbCrewBookings(Integer ambCrewId) {
         String SQL = "select * from ambulancebooking where archived = 'n' AND approvedBy != -1 AND " +
                 "approved = true AND ambCrewId = ? AND (status = 2 OR status = 3) ORDER BY urgent DESC, transferDateTime ASC";

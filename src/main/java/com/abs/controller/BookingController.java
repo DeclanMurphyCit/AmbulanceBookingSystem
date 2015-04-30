@@ -4,10 +4,7 @@ package com.abs.controller;
  * Created by Declan on 09/02/2015.
  */
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import javax.servlet.ServletContext;
 
@@ -17,6 +14,8 @@ import com.abs.service.broker.BrokerImpl;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -46,6 +45,37 @@ public class BookingController {
 
     @RequestMapping(value={"/displayBookings"}, method = RequestMethod.GET)
     public String listAll(ModelMap model) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        if(auth.getName().equals("anonymousUser"))
+        {
+            return "notLoggedIn";
+        }
+
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        boolean isAdon = authorities.contains(new SimpleGrantedAuthority("ROLE_ADON"));
+        boolean isAmbComp = authorities.contains(new SimpleGrantedAuthority("ROLE_AMB_COMP"));
+
+        String alert = "";
+
+        if(isAdon==true)
+        {//The following is used to check if the user is an ADON and if they require a notification
+            List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllUnapprovedBookings();
+            if(listBookings.size() > 0)
+                alert = "adon";
+
+        } else if(isAmbComp) {
+            //The following is used to check if the user is an amb company and if they require a notification
+            UserObj userObj = userObjDAO.getUserByUsername(name);
+            AmbulanceCompany ambCompany = ambulanceCompanyDAO.getCompanyUserId(userObj.getId());
+            List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getUnassignedBookingsForAmbCompany(ambCompany.getId());
+            if(listBookings.size() > 0)
+                alert = "ambCompany";
+
+        }
+
+        model.addAttribute("alert",alert);
 
         List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllBookings();
         List<AmbulanceCrew> listCrews = ambulanceCrewDAO.getAllCrews();
@@ -96,6 +126,15 @@ public class BookingController {
 
     @RequestMapping(value = "/addNewBooking", method = RequestMethod.GET)
     public String addNewBooking(ModelMap model) {
+
+        String alert = "";
+        List<AmbulanceBooking> unapprovedBookings = ambulanceBookingDAO.getAllUnapprovedBookings();
+        if(unapprovedBookings.size() > 0)
+            alert = "adon";
+        model.addAttribute("alert",alert);
+
+        model.addAttribute("title","Add New Booking");
+
         List<Ward> wardList = wardDAO.getAllWards();
         model.addAttribute("wardList", wardList);
         List<Location> locationList = locationDAO.getAllLocations();
@@ -107,6 +146,14 @@ public class BookingController {
     @RequestMapping(value = "/addNewBooking", method = RequestMethod.POST)
     public String addBooking(@ModelAttribute("ambulancebooking")  AmbulanceBooking ambulancebooking,
                              BindingResult result, ModelMap model) {
+
+        String alert = "";
+        List<AmbulanceBooking> unapprovedBookings = ambulanceBookingDAO.getAllUnapprovedBookings();
+        if(unapprovedBookings.size() > 0)
+            alert = "adon";
+        model.addAttribute("alert",alert);
+
+        model.addAttribute("title","Bookings List");
 
         if(result.hasErrors())
         {
@@ -184,6 +231,8 @@ public class BookingController {
 
     @RequestMapping(value={"/bookingPermission"}, method = RequestMethod.GET)
     public String bookingPermission(ModelMap model) {
+
+        model.addAttribute("title","Booking Permission");
 
         List<AmbulanceBooking> listBookings = ambulanceBookingDAO.getAllUnapprovedBookings();
         model.addAttribute("bookings", listBookings);

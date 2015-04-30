@@ -37,8 +37,9 @@
 </style>
 
 <div id="main-panel" align="center" style="width:100%">
+    <h3>${title}</h3>
     <div id="loading" align="center">
-        <img src="/WebResources/images/loading_spinner.gif" style="width:75px;height:75px">
+        <img src="<c:url value="/WebResources/images/loading_spinner.gif" />" style="width:75px;height:75px">
     </div>
     <table data-role="table" class="ui-responsive" data-mode="columntoggle" id="bookingsTable" style="display: none;">
         <thead>
@@ -62,7 +63,8 @@
         <tbody>
 
         <c:forEach var="ab" items="${bookings}">
-            <tr>
+            <tr <c:if test="${ab.urgent == true && ab.status != 5}"> style="color: red" </c:if> >
+
                 <td><c:out value="${patients[ab.bookingId]}"/></td>
                 <c:forEach var="location" items="${locations}">
                     <c:if test="${ab.origin == location.id}">
@@ -187,7 +189,7 @@
                 // {"bSortable": false, "aTargets": [ 2,7,8,9 ]},//Turn of sorting on cols 5,6
                 { "sType": "datetime-eu", "aTargets": [ 3 ] }//Set Column as Datetime-eu for sorting
             ],
-            "aaSorting": [[ 5,6, "desc" ]]
+            "aaSorting": [[ 8, "asc" ]]
         });
 
         jQuery("#loading").hide();

@@ -46,8 +46,7 @@
     </c:otherwise>
   </c:choose>
 
-  <div >
-
+  <div>
     <div class="row">
       <div class="col-xs-6 bold-text" align="right">Patient:</div>
       <div class="col-xs-7" align="left"><c:out value="${patients[ab.bookingId]}"/></div>

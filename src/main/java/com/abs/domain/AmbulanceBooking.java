@@ -1,18 +1,11 @@
 package com.abs.domain;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.optaplanner.core.api.domain.entity.PlanningEntity;
-import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
-import org.optaplanner.core.api.domain.variable.PlanningVariable;
-
 import java.util.Date;
 
 /**
  * Created by Declan on 20/01/2015.
  */
 
-@PlanningEntity
-@XStreamAlias("AmbulanceBooking")
 public class AmbulanceBooking {
 
     private Integer bookingId;
@@ -71,7 +64,6 @@ public class AmbulanceBooking {
 
     public AmbulanceBooking(){}
 
-    @PlanningVariable(valueRangeProviderRefs = {"acRange"})
     public AmbulanceCompany getAmbCompany() {
         return ambCompany;
     }

@@ -27,7 +27,7 @@ if(!ua.matches("(?i).*((android|bb\\d+|meego).+mobile|avantgo|bada\\/|blackberry
 </style>
 
 <div id="main-panel" align="center" style="width:500px;">
-    <h2>${message}</h2>
+    <h3>${title}</h3>
 
     <h3><span id="numBookings" class="label label-warning">Number of pending bookings: ${numberOfBookings}</span></h3>
 
@@ -40,8 +40,6 @@ if(!ua.matches("(?i).*((android|bb\\d+|meego).+mobile|avantgo|bada\\/|blackberry
         <div id="booking-${ab.bookingId}"  class="panel-body alert-info">
             </c:otherwise>
             </c:choose>
-
-
 
                 <div class="col-md-2" align="right">Patient:</div>
                 <div class="col-md-9" align="left"><c:out value="${patients[ab.bookingId]}"/></div>

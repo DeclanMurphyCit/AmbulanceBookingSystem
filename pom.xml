@@ -243,11 +243,6 @@
             <version>2.7</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.optaplanner</groupId>
-            <artifactId>optaplanner-benchmark</artifactId>
-            <version>6.2.0.CR3</version>
-        </dependency>
     </dependencies>
 
     <build>
